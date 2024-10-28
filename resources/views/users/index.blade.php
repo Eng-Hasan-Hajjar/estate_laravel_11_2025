@@ -1,5 +1,6 @@
+@extends('admin.layouts.app')
 
-
+@section('content')
 
     <h2>Users</h2>
     <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Add User</a>
@@ -31,4 +32,4 @@
     </table>
 
     {{ $users->links() }} <!-- Pagination links -->
-1ذ
+@endsection
