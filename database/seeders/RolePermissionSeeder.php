@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -12,28 +13,38 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-         // ربط صلاحيات المدير
-         $admin = Role::findByName('admin');
-         $admin->givePermissionTo(['manage users', 'manage properties', 'manage contracts']);
- 
-         // ربط صلاحيات الموظف
-         $employee = Role::findByName('employee');
-         $employee->givePermissionTo('manage properties');
- 
-         // ربط صلاحيات البائع
-         $seller = Role::findByName('seller');
-         $seller->givePermissionTo(['add property', 'interact with buyers']);
- 
-         // ربط صلاحيات المشتري
-         $buyer = Role::findByName('buyer');
-         $buyer->givePermissionTo('buy property');
- 
-         // ربط صلاحيات المستأجر
-         $tenant = Role::findByName('tenant');
-         $tenant->givePermissionTo('rent property');
- 
-         // ربط صلاحيات المسترهن
-         $mortgager = Role::findByName('mortgager');
-         $mortgager->givePermissionTo('manage mortgages');
+        // التأكد من وجود الصلاحيات المطلوبة بالحارس المحدد
+        $permissions = [
+            'manage users',
+            'manage properties',
+            'manage contracts',
+            'add property',
+            'interact with buyers',
+            'buy property',
+            'rent property',
+            'manage mortgages',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'role'] // تعيين guard_name إلى 'role'
+            );
+        }
+
+        // تأكد من أن الأدوار موجودة بالحارس المحدد
+        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'role']);
+        $employee = Role::firstOrCreate(['name' => 'employee', 'guard_name' => 'role']);
+        $seller = Role::firstOrCreate(['name' => 'seller', 'guard_name' => 'role']);
+        $buyer = Role::firstOrCreate(['name' => 'buyer', 'guard_name' => 'role']);
+        $tenant = Role::firstOrCreate(['name' => 'tenant', 'guard_name' => 'role']);
+        $mortgager = Role::firstOrCreate(['name' => 'mortgager', 'guard_name' => 'role']);
+
+        // ربط الصلاحيات بالأدوار
+        $admin->givePermissionTo(['manage users', 'manage properties', 'manage contracts']);
+        $employee->givePermissionTo('manage properties');
+        $seller->givePermissionTo(['add property', 'interact with buyers']);
+        $buyer->givePermissionTo('buy property');
+        $tenant->givePermissionTo('rent property');
+        $mortgager->givePermissionTo('manage mortgages');
     }
 }

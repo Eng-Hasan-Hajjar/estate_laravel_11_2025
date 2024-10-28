@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-
 
 class RolesTableSeeder extends Seeder
 {
@@ -14,13 +12,21 @@ class RolesTableSeeder extends Seeder
      */
     public function run(): void
     {
-       // إنشاء الأدوار
-       Role::create(['name' => 'admin']);
-       Role::create(['name' => 'employee']);
-       Role::create(['name' => 'seller']);
-       Role::create(['name' => 'buyer']);
-       Role::create(['name' => 'tenant']);
-       Role::create(['name' => 'mortgager']);
+        // Define the roles
+        $roles = [
+            'admin',
+            'employee',
+            'seller',
+            'buyer',
+            'tenant',
+            'mortgager',
+        ];
 
+        // Loop through each role and create it if it doesn't exist
+        foreach ($roles as $role) {
+            Role::firstOrCreate(
+                ['name' => $role, 'guard_name' => 'role'] // Set the guard_name to 'role'
+            );
+        }
     }
 }

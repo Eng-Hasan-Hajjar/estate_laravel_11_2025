@@ -2,13 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Models\User; // تأكد من إضافة هذه السطر
 class UserController extends Controller
 {
       // 1. عرض قائمة المستخدمين
       public function index()
       {
+
+        $user = User::where('email', 'eng.hasan.hajjar@gmail.com')->first(); // استبدل admin@example.com ببريد المدير
+        $adminRole = Role::where('name', 'admin')->first();
+
+        if ($user && $adminRole) {
+            $user->assignRole($adminRole);
+        }
+
+
           // جلب جميع المستخدمين مع أدوارهم
           $users = User::with('roles')->paginate(10);
           return view('users.index', compact('users'));
@@ -93,6 +104,7 @@ class UserController extends Controller
       // 7. حذف مستخدم
       public function destroy($id)
       {
+        
           // جلب المستخدم
           $user = User::findOrFail($id);
   
