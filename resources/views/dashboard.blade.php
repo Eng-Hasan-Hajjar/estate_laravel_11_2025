@@ -17,6 +17,9 @@
                         <a href="{{ route('permissions.index') }}" >
                             Permessions 
                         </a>
+                        <a href="{{ route('properties.index') }}" >
+                            properties 
+                        </a>
                     </div>
                 </div>
             </div>

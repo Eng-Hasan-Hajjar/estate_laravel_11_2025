@@ -81,3 +81,12 @@ Route::middleware(['auth'])->group(function () {
 Route::get('admin-page',function(){
     return view('admin.index');
 });
+
+
+
+
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertyImageController;
+
+Route::resource('properties', PropertyController::class);
+Route::resource('properties.property-images', PropertyImageController::class);
