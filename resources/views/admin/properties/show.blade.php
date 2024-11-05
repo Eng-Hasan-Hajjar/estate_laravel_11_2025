@@ -1,50 +1,37 @@
 @extends('admin.layouts.app')
 
+<head>
+    <style>
+        .mySlides { display: none; 
+        
+        padding: 10px;
+        margin: 10px;
+        border:10px;
+        
+        border-color:#3f6791;
+        border-style: double;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+        
+        }
+        .modal-navigation-btn {
+            position: absolute;
+            top: 150%;
+            transform: translateY(-50%);
+            background-color: rgba(5, 101, 179, 0.5);
+            border: none;
+            color: #3f6791;
+            padding: 5px;
+            font-size: 50px;
+            cursor: pointer;
+            border-radius: 100%;
+        }
+        .prev-btn { left: 30%; }
+        .next-btn { right: 10%; }
+    </style>
+</head>
+
 @section('content')
-
-<style>
-    .img-overlay-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: 8px;
-    }
-
-    .img-overlay-container img {
-        transition: transform 0.3s ease;
-        width: 100%; /* تأكد من عرض الصورة بشكل كامل */
-        height: auto; /* الحفاظ على نسبة الطول والعرض */
-    }
-
-    .img-overlay-container:hover img {
-        transform: scale(1.05);
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        opacity: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        transition: opacity 0.3s ease;
-    }
-
-    .img-overlay-container:hover .overlay {
-        opacity: 1;
-    }
-    .modal-body img {
-    max-width: 100%;
-    height: auto; /* هذا سيحافظ على نسبة العرض والطول */
-}
-
-</style>
-
 <div class="container">
     <h1 class="my-4">{{ $property->title }}</h1>
 
@@ -73,93 +60,46 @@
         </div>
     </div>
 
-    <hr>
-
     <h4 class="mb-4 text-center">Image Gallery</h4>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-        @foreach($property->images as $index => $image)
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="img-overlay-container">
-                        <img src="{{ asset('storage/' . $image->image_url) }}" 
-                             class="card-img-top img-fluid rounded gallery-image" 
-                             alt="Property Image" 
-                             data-bs-toggle="modal" 
-                             data-bs-target="#imageModal" 
-                             data-index="{{ $index }}" 
-                             data-url="{{ asset('storage/' . $image->image_url) }}" 
-                             data-primary="{{ $image->is_primary ? 'Yes' : 'No' }}">
-                        <div class="overlay">
-                            <div class="overlay-text">
-                                <p>Primary: {{ $image->is_primary ? 'Yes' : 'No' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content bg-dark">
-          <div class="modal-header border-0">
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center">
-            <img src="" class="img-fluid" id="modalImage" alt="Large Property Image">
-            <p class="text-muted mt-3" id="primaryText"></p>
-          </div>
-          <div class="modal-footer justify-content-between border-0">
-            <button class="btn btn-secondary" id="prevImage">&larr; Previous</button>
-            <button class="btn btn-secondary" id="nextImage">Next &rarr;</button>
-          </div>
+    <div   style="margin-bottom:200px">
+
+        <div class="container">
+            @foreach($property->images as $index => $image)
+                <img class="mySlides" src="{{ asset('storage/' . $image->image_url) }}" style="width:100%">
+          
+                @endforeach
+                <button class="modal-navigation-btn prev-btn" onclick="plusDivs(-1)">&#10094;</button>
+                <button class="modal-navigation-btn next-btn" onclick="plusDivs(1)">&#10095;</button>
+
         </div>
-      </div>
+    
+
+
     </div>
+<br>
+
+
+
+
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusDivs(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            if (n > x.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = x.length }
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            x[slideIndex - 1].style.display = "block";
+        }
+    </script>
 </div>
-
 @endsection
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const images = document.querySelectorAll('.gallery-image');
-        const modalImage = document.getElementById('modalImage');
-        const primaryText = document.getElementById('primaryText');
-        let currentIndex = 0;
-
-            const updateModalContent = (index) => {
-        const image = images[index];
-        modalImage.src = image.getAttribute('data-url');
-        primaryText.textContent = "Primary: " + image.getAttribute('data-primary');
-        currentIndex = index;
-
-        // إظهار المودال بعد تحديث المحتوى
-        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
-        modal.show();
-    };
-
-        images.forEach((image, index) => {
-            image.addEventListener('click', () => {
-                updateModalContent(index);
-            });
-        });
-
-        document.getElementById('prevImage').addEventListener('click', () => {
-            if (currentIndex > 0) {
-                updateModalContent(currentIndex - 1);
-            } else {
-                updateModalContent(images.length - 1);
-            }
-        });
-
-        document.getElementById('nextImage').addEventListener('click', () => {
-            if (currentIndex < images.length - 1) {
-                updateModalContent(currentIndex + 1);
-            } else {
-                updateModalContent(0);
-            }
-        });
-    });
-</script>
