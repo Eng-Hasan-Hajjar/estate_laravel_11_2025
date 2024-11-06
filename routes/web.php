@@ -72,4 +72,17 @@ Route::resource('properties.property-images', PropertyImageController::class);
 Route::get('indexproperty',function(){
     return view('website.index');
 });
+Route::get('about-web',function(){
+    return view('website.pages.about');
+});
 
+
+Route::get('property-agent-web',function(){
+    return view('website.pages.property-agent');
+});
+Route::get('property-list-web',function(){
+    return view('website.pages.property-list');
+});
+Route::get('property-type-web',function(){
+    return view('website.pages.property-type');
+});
