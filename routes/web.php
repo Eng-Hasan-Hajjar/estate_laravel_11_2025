@@ -80,9 +80,15 @@ Route::get('about-web',function(){
 Route::get('property-agent-web',function(){
     return view('website.pages.property-agent');
 });
-Route::get('property-list-web',function(){
-    return view('website.pages.property-list');
-});
+
+Route::get('property-list-web',[PropertyController::class, 'propertyList']);
+
+
+
 Route::get('property-type-web',function(){
     return view('website.pages.property-type');
+});
+
+Route::get('advance-search',function(){
+    return view('website.pages.advance-search');
 });

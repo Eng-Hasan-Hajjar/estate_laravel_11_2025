@@ -127,4 +127,52 @@ class PropertyController extends Controller
             return redirect()->route('properties.index')->with('success', 'Property deleted successfully.');
      
     }
+
+
+
+    public function propertyList()
+    {
+        $properties = Property::with('images')->paginate(10);
+        return view('website.pages.property-list', compact('properties'));
+    }
+
+    public function filter(Request $request)
+    {
+        // تعريف متغير `query` لبدء إنشاء الاستعلام.
+        $query = Property::with('images');
+
+        // فلترة حسب الموقع
+        if ($request->filled('location')) {
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        // فلترة حسب السعر
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // فلترة حسب النوع
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // فلترة حسب عدد الغرف
+        if ($request->filled('num_bedrooms')) {
+            $query->where('num_bedrooms', '>=', $request->num_bedrooms);
+        }
+
+        // فلترة حسب الحالة
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // تنفيذ الاستعلام وجلب النتائج مع التصفح
+        $properties = $query->paginate(10);
+
+        return view('admin.properties.index', compact('properties'));
+    }
+
 }
