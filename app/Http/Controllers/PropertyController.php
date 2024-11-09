@@ -20,6 +20,7 @@ class PropertyController extends Controller
     {
         return view('admin.properties.create');
     }
+    /*
     public function store(Request $request)
     {
 
@@ -63,6 +64,74 @@ class PropertyController extends Controller
     
         return redirect()->route('properties.index')->with('success', 'Property created successfully.');
     }
+*/
+public function store(Request $request)
+{
+    // التحقق من أن المستخدم مسجل دخول
+    if (!auth()->check()) {
+        return redirect()->route('login')->with('error', 'You must be logged in to create a property.');
+    }
+
+    // التحقق من الحقول المطلوبة مع رسائل مخصصة
+    $validatedData = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'price' => 'required|numeric|max:999999999999999',
+        'type' => 'required',
+        'location' => 'required|max:255',
+        'area' => 'required|numeric',
+        'num_bedrooms' => 'required|integer',
+        'num_bathrooms' => 'required|integer',
+        'status' => 'required',
+        'main_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ], [
+        // رسائل مخصصة لكل حقل
+        'title.required' => 'The title field is required.',
+        'title.max' => 'The title must not exceed 255 characters.',
+        'description.required' => 'The description field is required.',
+        'price.required' => 'The price field is required.',
+        'price.numeric' => 'The price must be a number.',
+        'price.max' => 'The price exceeds the allowed range.',
+        'type.required' => 'The type field is required.',
+        'location.required' => 'The location field is required.',
+        'location.max' => 'The location must not exceed 255 characters.',
+        'area.required' => 'The area field is required.',
+        'area.numeric' => 'The area must be a number.',
+        'num_bedrooms.required' => 'The number of bedrooms field is required.',
+        'num_bedrooms.integer' => 'The number of bedrooms must be an integer.',
+        'num_bathrooms.required' => 'The number of bathrooms field is required.',
+        'num_bathrooms.integer' => 'The number of bathrooms must be an integer.',
+        'status.required' => 'The status field is required.',
+        'main_image.image' => 'The main image must be an image file.',
+        'main_image.mimes' => 'The main image must be in jpeg, png, or jpg format.',
+        'main_image.max' => 'The main image size must not exceed 2MB.',
+    ]);
+
+    // إضافة user_id إلى البيانات للتحقق من ارتباط العقار بالمستخدم الحالي
+    $validatedData['user_id'] = Auth::id(); // تأكد من أن المستخدم مسجل دخول
+
+    try {
+        // إنشاء سجل العقار
+        $property = Property::create($validatedData);
+
+        // التحقق من رفع الصورة وتخزينها
+        if ($request->hasFile('main_image')) {
+            $path = $request->file('main_image')->store('property_images', 'public');
+
+            // إنشاء سجل للصورة المرتبطة
+            PropertyImage::create([
+                'property_id' => $property->id,
+                'image_url' => $path,
+                'is_primary' => true
+            ]);
+        }
+
+        return redirect()->route('properties.index')->with('success', 'Property created successfully.');
+    } catch (\Illuminate\Database\QueryException $e) {
+        return redirect()->back()->with('error', 'An unexpected error occurred while creating the property. Please try again.');
+    }
+}
+
 
     
 
@@ -76,7 +145,6 @@ class PropertyController extends Controller
     {
         return view('admin.properties.edit', compact('property'));
     }
-
     public function update(Request $request, Property $property)
     {
         $validatedData = $request->validate([
@@ -89,10 +157,26 @@ class PropertyController extends Controller
             'num_bedrooms' => 'required|integer',
             'num_bathrooms' => 'required|integer',
             'status' => 'required'
+        ], [
+            'title.required' => 'The title field is required.',
+            'title.max' => 'The title must not exceed 255 characters.',
+            'description.required' => 'The description field is required.',
+            'price.required' => 'The price field is required.',
+            'price.numeric' => 'The price must be a numeric value.',
+            'type.required' => 'The type field is required.',
+            'location.required' => 'The location field is required.',
+            'location.max' => 'The location must not exceed 255 characters.',
+            'area.required' => 'The area field is required.',
+            'area.numeric' => 'The area must be a numeric value.',
+            'num_bedrooms.required' => 'The number of bedrooms field is required.',
+            'num_bedrooms.integer' => 'The number of bedrooms must be an integer.',
+            'num_bathrooms.required' => 'The number of bathrooms field is required.',
+            'num_bathrooms.integer' => 'The number of bathrooms must be an integer.',
+            'status.required' => 'The status field is required.'
         ]);
-
+    
         $property->update($validatedData);
-
+    
         // تحديث الصورة إن وُجدت
         if ($request->hasFile('main_image')) {
             // حذف الصورة السابقة
@@ -101,7 +185,7 @@ class PropertyController extends Controller
                 Storage::disk('public')->delete($existingImage->image_url);
                 $existingImage->delete();
             }
-
+    
             // تخزين الصورة الجديدة
             $path = $request->file('main_image')->store('property_images', 'public');
             PropertyImage::create([
@@ -110,10 +194,10 @@ class PropertyController extends Controller
                 'is_primary' => true
             ]);
         }
-
+    
         return redirect()->route('properties.index')->with('success', 'Property updated successfully.');
-  
     }
+    
 
     public function destroy(Property $property)
     {

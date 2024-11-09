@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->string('title', 255);
             $table->text('description');
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 12, 2);
             $table->enum('type', ['apartment', 'house', 'villa', 'land', 'office', 'shop']);
             $table->string('location', 255);
             $table->decimal('latitude', 10, 8)->nullable();
