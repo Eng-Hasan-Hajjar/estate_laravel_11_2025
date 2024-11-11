@@ -86,11 +86,17 @@
         </div>
     </div>
 
+        <!-- comments Form -->
+        @include('admin.comments.add-button')
+        @include('admin.comments.view-comments')
+
         <!-- Rating Form -->
 
 
         @include('admin.properties.rating-form')
         @include('admin.properties.rating-view')
+
+
 
 
         <script>

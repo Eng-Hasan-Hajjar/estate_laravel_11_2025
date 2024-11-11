@@ -97,7 +97,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./properties" class="nav-link">
+                <a  href="{{ route('properties.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>properties</p>
                 </a>

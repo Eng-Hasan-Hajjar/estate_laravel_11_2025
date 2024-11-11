@@ -100,3 +100,17 @@ Route::post('/properties/{property}/rate', [RatingController::class, 'store'])->
 
 
 Route::resource('ratings', RatingController::class);
+
+
+use App\Http\Controllers\CommentController;
+
+
+// Route لعرض التعليقات الخاصة بالعقار
+Route::get('properties/{propertyId}/comments', [CommentController::class, 'index'])->name('comments.index');
+
+Route::post('properties/{propertyId}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update.put');
+Route::patch('comments/{comment}', [CommentController::class, 'update'])->name('comments.update.patch');
