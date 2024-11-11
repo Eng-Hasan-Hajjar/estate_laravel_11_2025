@@ -92,3 +92,7 @@ Route::get('property-type-web',function(){
 Route::get('advance-search',function(){
     return view('website.pages.advance-search');
 });
+
+
+
+Route::post('/properties/{property}/rate', [RatingController::class, 'store'])->name('properties.rate');

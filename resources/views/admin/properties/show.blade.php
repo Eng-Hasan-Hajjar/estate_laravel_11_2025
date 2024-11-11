@@ -86,6 +86,39 @@
     </div>
 </div>
 
+
+
+@if(auth()->check())
+    <form action="{{ route('properties.rate', $property->id) }}" method="POST">
+        @csrf
+        <div class="mb-3">
+            <label for="rating" class="form-label">Your Rating (1-5 Stars)</label>
+            <select name="rating" id="rating" class="form-select">
+                @for($i = 1; $i <= 5; $i++)
+                    <option value="{{ $i }}">{{ $i }} Star{{ $i > 1 ? 's' : '' }}</option>
+                @endfor
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="comment" class="form-label">Comment</label>
+            <textarea name="comment" id="comment" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Rating</button>
+    </form>
+@endif
+
+
+<h4>Ratings and Reviews</h4>
+@foreach($property->ratings as $rating)
+    <div class="border p-3 mb-2">
+        <strong>{{ $rating->user->name }}</strong> rated {{ $rating->rating }} stars
+        <p>{{ $rating->comment }}</p>
+    </div>
+@endforeach
+
+
+
+
     <script>
         var slideIndex = 1;
         showSlides(slideIndex);

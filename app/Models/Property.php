@@ -27,5 +27,10 @@ class Property extends Model
         return $this->hasOne(PropertyImage::class)->where('is_primary', true);
     }
 
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 
+    
 }
