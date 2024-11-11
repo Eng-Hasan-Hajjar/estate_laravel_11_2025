@@ -94,5 +94,9 @@ Route::get('advance-search',function(){
 });
 
 
-
+use App\Http\Controllers\RatingController;
 Route::post('/properties/{property}/rate', [RatingController::class, 'store'])->name('properties.rate');
+
+
+
+Route::resource('ratings', RatingController::class);
