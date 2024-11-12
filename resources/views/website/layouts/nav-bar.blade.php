@@ -36,6 +36,8 @@
                             >
                                 Dashboard
                             </a>
+                            <a href="" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
+                            
                         @else
                             <a
                                 href="{{ route('login') }}"
@@ -59,7 +61,7 @@
                 
 
 
-                    <a href="" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
+                   
                 </div>
             </nav>
         </div>

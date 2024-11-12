@@ -29,6 +29,7 @@
 
             <!-- زر الرد على التعليق -->
             @if(Auth::check())
+               @include('admin.comments.add-reply')
                 <div class="mt-2">
                     <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#reply-form-{{ $comment->id }}" aria-expanded="false" aria-controls="reply-form-{{ $comment->id }}">
                         <i class="fas fa-reply"></i> Reply
