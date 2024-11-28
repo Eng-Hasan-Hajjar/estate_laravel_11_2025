@@ -54,7 +54,7 @@
                             </div>
                             <div class="card-body p-0">
                                 @if($property->mainImage)
-                                    <img src="{{ asset('storage/' . $property->mainImage->image_url) }}" alt="Main Image" class="img-fluid rounded mb-3">
+                                    <img src="{{ asset('storage/'. $property->mainImage->image_url) }}" alt="Main Image" class="img-fluid rounded mb-3">
                                 @else
                                     <p class="text-center text-muted py-3">No main image available</p>
                                 @endif

@@ -95,8 +95,10 @@ public function store(Request $request)
 public function show(Property $property)
 {
     // تحميل الصورة الرئيسية والصور الأخرى للعقار
-    $property->load('mainImage', 'images');
-
+   // $property->load('mainImage', 'images');
+   $property->load(['mainImage' => function($query) {
+    $query->select('property_id', 'image_url');
+}]);
     // استخدام الـ property->id بدلاً من $propertyId
     $comments = Comment::where('property_id', $property->id)->get();
 

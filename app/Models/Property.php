@@ -12,20 +12,23 @@ class Property extends Model
         'title','user_id', 'description', 'price', 'type', 'location', 'area', 'num_bedrooms', 'num_bathrooms', 'status'
     ];
 
+ 
     public function images()
     {
-        return $this->hasMany(PropertyImage::class);
+        return $this->hasMany(PropertyImage::class, 'property_id');
     }
-
+    
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+
     public function mainImage()
-    {
-        return $this->hasOne(PropertyImage::class)->where('is_primary', true);
-    }
+{
+    return $this->hasOne(PropertyImage::class)->where('is_primary', 1);
+}
+
 
     public function ratings()
     {
