@@ -40,7 +40,7 @@
                         <a href="{{ route('comments.index', $property->id) }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-eye"></i> Show Comments
                         </a>
-                    
+                      
                         <form action="{{ route('properties.destroy', $property->id) }}" method="POST" class="d-inline-block">
                             @csrf
                             @method('DELETE')

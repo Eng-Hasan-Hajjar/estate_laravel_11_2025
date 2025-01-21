@@ -48,13 +48,23 @@
 
                     <!-- Main Image -->
                     <div class="col-md-4">
+
+
+
+                     
+                         
+
+                    
+
+                        
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-header bg-secondary text-white">
                                 <h5 class="m-0">Main Image</h5>
                             </div>
                             <div class="card-body p-0">
                                 @if($property->mainImage)
-                                    <img src="{{ asset('storage/'. $property->mainImage->image_url) }}" alt="Main Image" class="img-fluid rounded mb-3">
+                                
+                                    <img src="{{ asset('storage/'.$property->mainImage->image_url) }}" alt="Main Image" class="img-fluid rounded mb-3">
                                 @else
                                     <p class="text-center text-muted py-3">No main image available</p>
                                 @endif
