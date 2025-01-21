@@ -66,9 +66,9 @@ Route::resource('properties.property-images', PropertyImageController::class);
 
 
 /*   website   */
-Route::get('indexproperty',function(){
-    return view('website.index');
-});
+Route::get('indexproperty', [PropertyController::class, 'index_web'])->name('indexproperty');
+
+
 Route::get('about-web',function(){
     return view('website.pages.about');
 });
@@ -80,6 +80,7 @@ Route::get('property-agent-web',function(){
 
 Route::get('property-list-web',[PropertyController::class, 'propertyList']);
 
+Route::get('/property-web/{id}', [PropertyController::class, 'show_web'])->name('propertyweb.details');
 
 
 Route::get('property-type-web',function(){

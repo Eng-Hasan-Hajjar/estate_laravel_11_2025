@@ -11,13 +11,13 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="advance-search" class="nav-item nav-link">My Search</a>
+                        <a href={{url('indexproperty')}} class="nav-item nav-link active">Home</a>
+                        <a href="advance-search" class="nav-item nav-link">Search</a>
                         <a href="about-web" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="property-list-web" class="dropdown-item">Property List</a>
+                                <a href={{url('property-list-web')}} class="dropdown-item">Property List</a>
                                 <a href="property-type-web" class="dropdown-item">Property Type</a>
                                 <a href="property-agent-web" class="dropdown-item">Property Agent</a>
                             </div>

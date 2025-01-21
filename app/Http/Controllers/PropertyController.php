@@ -16,6 +16,11 @@ class PropertyController extends Controller
         $properties = Property::with('images')->paginate(10);
         return view('admin.properties.index', compact('properties'));
     }
+    public function index_web()
+{  $properties = Property::with('images')->paginate(10);
+   // $properties = Property::latest()->get(); // جلب جميع العقارات وترتيبها من الأحدث
+    return view('website.index', compact('properties'));
+}
 
     public function create()
     {
@@ -102,6 +107,12 @@ public function show(Property $property)
 
     // تمرير الـ property والـ comments إلى الـ View
     return view('admin.properties.show', compact('property', 'comments'));
+}
+
+public function show_web($id)
+{
+    $property = Property::with('mainImage')->findOrFail($id);
+    return view('website.pages.property-list-single', compact('property'));
 }
 
 

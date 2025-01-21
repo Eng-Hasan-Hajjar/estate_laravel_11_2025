@@ -6,22 +6,34 @@
                     <div class="col-md-4">
                         <input type="text" class="form-control border-0 py-3" placeholder="Search Keyword">
                     </div>
+                 
                     <div class="col-md-4">
                         <select class="form-select border-0 py-3">
-                            <option selected>Property Type</option>
-                            <option value="1">Property Type 1</option>
-                            <option value="2">Property Type 2</option>
-                            <option value="3">Property Type 3</option>
+                            @if($properties->isNotEmpty())
+                                <option selected>Property Type</option>
+                                @foreach($properties as $property)
+                                    <option value="{{ $property->type }}">{{ $property->type }}</option>
+                                @endforeach
+                            @else
+                                <option selected disabled>No Property Types Available</option>
+                            @endif
                         </select>
                     </div>
+
                     <div class="col-md-4">
                         <select class="form-select border-0 py-3">
-                            <option selected>Location</option>
-                            <option value="1">Location 1</option>
-                            <option value="2">Location 2</option>
-                            <option value="3">Location 3</option>
+                            @if($properties->isNotEmpty())
+                                <option selected>Location</option>
+                                @foreach($properties as $property)
+                         
+                                    <option value="{{ $property->location }}">{{ $property->location }}</option>
+                                @endforeach
+                            @else
+                                <option selected disabled>No Locations Available</option>
+                            @endif
                         </select>
                     </div>
+               
                 </div>
             </div>
             <div class="col-md-2">

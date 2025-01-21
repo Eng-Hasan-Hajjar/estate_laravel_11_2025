@@ -25,3 +25,27 @@
 
 <!-- Template Stylesheet -->
 <link href="{{asset('website/css/style.css')}}" rel="stylesheet">
+
+
+<style>
+    .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 220px; /* لضمان أن الصورة تبقى في الوسط دائماً */
+        width: 100%;
+    }
+
+    .property-image {
+        width: 100%;
+        height: auto;
+        max-width: 300px; /* ضبط الحجم الأقصى للصورة */
+        max-height: 200px;
+        object-fit: cover; /* ضمان عدم تشويه الصور */
+        border-radius: 8px;
+    }
+
+    .property-item {
+        text-align: center; /* محاذاة جميع العناصر للوسط */
+    }
+</style>
