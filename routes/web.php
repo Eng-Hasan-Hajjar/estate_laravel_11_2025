@@ -66,6 +66,10 @@ Route::resource('properties.property-images', PropertyImageController::class);
 
 
 /*   website   */
+
+Route::post('/properties/filterweb', [PropertyController::class, 'filterweb'])->name('properties.filterweb');
+
+
 Route::get('indexproperty', [PropertyController::class, 'index_web'])->name('indexproperty');
 
 

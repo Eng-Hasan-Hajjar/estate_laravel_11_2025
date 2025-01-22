@@ -200,6 +200,7 @@ public function show_web($id)
         // تعريف متغير `query` لبدء إنشاء الاستعلام.
         $query = Property::with('images');
 
+  
         // فلترة حسب الموقع
         if ($request->filled('location')) {
             $query->where('location', 'like', '%' . $request->location . '%');
@@ -232,6 +233,31 @@ public function show_web($id)
         $properties = $query->paginate(10);
 
         return view('admin.properties.index', compact('properties'));
+    }
+
+
+    public function filterweb(Request $request)
+    {
+        //dd($request); // لاختبار وصول البيانات
+
+        $query = Property::query();
+
+        if ($request->filled('keyword')) {
+            $query->where('title', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('description', 'like', '%' . $request->keyword . '%');
+        }
+
+        if ($request->filled('location')) {
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        $properties = $query->paginate(10);
+
+        return view('website.index', compact('properties'));
     }
 
 }
