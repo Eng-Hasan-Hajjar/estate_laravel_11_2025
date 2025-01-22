@@ -73,9 +73,22 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./dashboard" class="nav-link">
+                <a href="{{ route('dashboard') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>home</p>
+                </a>
+              </li>
+        
+              <li class="nav-item">
+                <a  href="{{ route('locations.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>locations</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a  href="{{ route('properties.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>properties</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -94,12 +107,6 @@
                 <a href="./permissions" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>permissions</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a  href="{{ route('properties.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>properties</p>
                 </a>
               </li>
               <li class="nav-item">

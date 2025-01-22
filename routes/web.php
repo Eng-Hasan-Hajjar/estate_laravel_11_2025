@@ -61,8 +61,10 @@ use App\Http\Controllers\PropertyImageController;
 Route::resource('properties', PropertyController::class);
 Route::resource('properties.property-images', PropertyImageController::class);
 
-
-
+use App\Http\Controllers\LocationController;
+Route::resource('locations', LocationController::class);
+use App\Http\Controllers\RegionController;
+Route::resource('regions', RegionController::class);
 
 
 /*   website   */
