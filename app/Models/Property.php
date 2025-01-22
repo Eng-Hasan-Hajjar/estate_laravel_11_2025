@@ -38,5 +38,9 @@ class Property extends Model
     {
         return $this->belongsTo(Location::class);
     }
-    
+    public function propertyType()
+    {
+        return $this->belongsTo(PropertyType::class);
+    }
+
 }

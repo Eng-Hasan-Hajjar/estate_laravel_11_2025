@@ -65,7 +65,8 @@ use App\Http\Controllers\LocationController;
 Route::resource('locations', LocationController::class);
 use App\Http\Controllers\RegionController;
 Route::resource('regions', RegionController::class);
-
+use App\Http\Controllers\PropertyTypeController;
+Route::resource('property-types', PropertyTypeController::class);
 
 /*   website   */
 
