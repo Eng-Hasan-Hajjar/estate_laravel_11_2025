@@ -1,7 +1,3 @@
-
-                      
-                        
-
 <head>
     @include('website.layouts.head')
 </head>

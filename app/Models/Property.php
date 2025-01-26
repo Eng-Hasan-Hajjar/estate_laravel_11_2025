@@ -9,7 +9,8 @@ class Property extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title','user_id', 'description', 'price', 'type', 'location', 'area', 'num_bedrooms', 'num_bathrooms', 'status'
+        'title','user_id', 'description', 'price','currency', 'type', 'location', 'area', 'num_bedrooms',
+         'num_bathrooms', 'status', 'directions', 'num_balconies', 'is_furnished'
     ];
 
  

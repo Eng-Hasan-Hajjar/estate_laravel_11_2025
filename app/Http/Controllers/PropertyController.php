@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use App\Models\Property;
@@ -14,8 +15,9 @@ class PropertyController extends Controller
     public function index()
     {
         //$comments = Comment::where('property_id', $propertyId)->get();
-        $properties = Property::with('images')->paginate(10);
-        return view('admin.properties.index', compact('properties'));
+        $locations=Location::all();
+        $properties = Property::with(['images', 'location'])->paginate(10);
+        return view('admin.properties.index', compact('properties','locations'));
     }
     public function index_web()
 {  $properties = Property::with('images')->paginate(10);
@@ -25,8 +27,9 @@ class PropertyController extends Controller
 
     public function create()
     {
+        $locations=Location::all();
         $propertyTypes = PropertyType::all(); // جلب جميع أنواع العقارات
-        return view('admin.properties.create', compact('propertyTypes'));
+        return view('admin.properties.create', compact('propertyTypes','locations'));
     }
 
 public function store(Request $request)
@@ -41,13 +44,19 @@ public function store(Request $request)
         'title' => 'required|max:255',
         'description' => 'required',
         'price' => 'required|numeric|max:999999999999999',
-        'property_type_id' => 'required',
-        'location' => 'required|max:255',
+        'currency' => 'required|string|max:10', // التحقق من العملة
+        'property_type_id' => 'required|exists:property_types,id',
+        'location_id' => 'required|exists:locations,id',
         'area' => 'required|numeric',
         'num_bedrooms' => 'required|integer',
         'num_bathrooms' => 'required|integer',
         'status' => 'required',
+     
+        'num_balconies' => 'nullable|integer|min:0',
+        'is_furnished' => 'nullable|boolean',
         'main_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'directions' => 'nullable|array',
+        'directions.*' => 'in:north,south,east,west',
     ], [
         // رسائل مخصصة لكل حقل
         'title.required' => 'The title field is required.',
@@ -57,8 +66,8 @@ public function store(Request $request)
         'price.numeric' => 'The price must be a number.',
         'price.max' => 'The price exceeds the allowed range.',
         'property_type_id.required' => 'The type field is required.',
-        'location.required' => 'The location field is required.',
-        'location.max' => 'The location must not exceed 255 characters.',
+        'location_id.required' => 'The location field is required.',
+        'location_id.max' => 'The location must not exceed 255 characters.',
         'area.required' => 'The area field is required.',
         'area.numeric' => 'The area must be a number.',
         'num_bedrooms.required' => 'The number of bedrooms field is required.',
@@ -69,8 +78,19 @@ public function store(Request $request)
         'main_image.image' => 'The main image must be an image file.',
         'main_image.mimes' => 'The main image must be in jpeg, png, or jpg format.',
         'main_image.max' => 'The main image size must not exceed 2MB.',
+        'directions.array' => 'الاتجاهات يجب أن تكون قائمة من القيم.',
+        'directions.*.in' => 'الاتجاه المحدد غير صالح.',
+        'num_balconies.integer' => 'عدد الشرفات يجب أن يكون رقمًا صحيحًا.',
+        'is_furnished.boolean' => 'يجب أن تكون القيمة إما نعم أو لا.',
     ]);
-
+    // تحويل الاتجاهات إلى نص إذا تم تحديدها
+    if ($request->has('directions')) {
+        $validatedData['directions'] = implode(',', $request->directions);
+    } else {
+        $validatedData['directions'] = null;
+    }
+    $validatedData['location_id'] = 'location_id'; 
+    $validatedData['property_type_id'] = 'property_type_id'; 
     // إضافة user_id إلى البيانات للتحقق من ارتباط العقار بالمستخدم الحالي
     $validatedData['user_id'] = Auth::id(); // تأكد من أن المستخدم مسجل دخول
 
@@ -120,8 +140,9 @@ public function show_web($id)
 
     public function edit(Property $property)
     {
+        $locations=Location::all();
         $propertyTypes = PropertyType::all();
-        return view('admin.properties.edit', compact('property', 'propertyTypes'));
+        return view('admin.properties.edit', compact('property', 'propertyTypes','locations'));
     }
     public function update(Request $request, Property $property)
     {
@@ -129,30 +150,49 @@ public function show_web($id)
             'title' => 'required|max:255',
             'description' => 'required',
             'price' => 'required|numeric',
-            'type' => 'required',
-            'location' => 'required|max:255',
+            'currency' => 'required|string|max:10',
+
+            'property_type_id' => 'required',
+            'location_id' => 'required|max:255',
             'area' => 'required|numeric',
             'num_bedrooms' => 'required|integer',
             'num_bathrooms' => 'required|integer',
-            'status' => 'required'
+            'status' => 'required',
+            'directions' => 'nullable|array',
+            'directions.*' => 'in:north,south,east,west',
+
+            'num_balconies' => 'nullable|integer|min:0',
+            'is_furnished' => 'nullable|boolean',
+
         ], [
             'title.required' => 'The title field is required.',
             'title.max' => 'The title must not exceed 255 characters.',
             'description.required' => 'The description field is required.',
             'price.required' => 'The price field is required.',
             'price.numeric' => 'The price must be a numeric value.',
-            'type.required' => 'The type field is required.',
-            'location.required' => 'The location field is required.',
-            'location.max' => 'The location must not exceed 255 characters.',
+            'property_type_id.required' => 'The type field is required.',
+            'location_id.required' => 'The location field is required.',
+            'location_id.max' => 'The location must not exceed 255 characters.',
             'area.required' => 'The area field is required.',
             'area.numeric' => 'The area must be a numeric value.',
             'num_bedrooms.required' => 'The number of bedrooms field is required.',
             'num_bedrooms.integer' => 'The number of bedrooms must be an integer.',
             'num_bathrooms.required' => 'The number of bathrooms field is required.',
             'num_bathrooms.integer' => 'The number of bathrooms must be an integer.',
+            'directions.array' => 'الاتجاهات يجب أن تكون قائمة من القيم.',
+            'directions.*.in' => 'الاتجاه المحدد غير صالح.',
+            'num_balconies.integer' => 'عدد الشرفات يجب أن يكون رقمًا صحيحًا.',
+            'is_furnished.boolean' => 'يجب أن تكون القيمة إما نعم أو لا.',
+
             'status.required' => 'The status field is required.'
         ]);
-    
+      // تحويل الاتجاهات إلى نص إذا تم تحديدها
+        if ($request->has('directions')) {
+            $validatedData['directions'] = implode(',', $request->directions);
+        } else {
+            $validatedData['directions'] = null;
+        }
+
         $property->update($validatedData);
     
         // تحديث الصورة إن وُجدت

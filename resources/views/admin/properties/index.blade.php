@@ -23,9 +23,9 @@
             <tbody>
                 @foreach ($properties as $property)
                     <tr>
-                        
                         <td>{{ $property->title }}</td>
-                        <td>{{ $property->location }}</td>
+                        <td>{{ optional($property->location)->name ?? 'N/A' }}</td>
+
                        <td>{{ $property->type }}</td>
                        <td class="d-flex justify-content-start align-items-center gap-3">  <!-- زيادة المسافة هنا -->
                         <a href="{{ route('properties.show', $property->id) }}" class="btn btn-info btn-sm">

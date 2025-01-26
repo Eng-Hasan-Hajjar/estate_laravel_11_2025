@@ -30,12 +30,20 @@
         </div>
 
         <!-- حقل الموقع -->
+  
         <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input type="text" name="location" id="location" class="form-control @error('location') is-invalid @enderror" value="{{ old('location', $property->location) }}" required>
-            @error('location')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label for="location" class="form-label"> Location</label>
+            <select name="location" id="location" class="form-select @error('location') is-invalid @enderror" required>
+                <option value="">Select Location </option>
+                @foreach($locations as $location)
+                    <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>
+                        {{ $location->name }}
+                    </option>
+                @endforeach
+            </select>
+                @error('location')
+                  <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
         </div>
 
         <!-- حقل السعر -->
@@ -46,6 +54,21 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        <div class="mb-3">
+            <label for="currency" class="form-label">Currency</label>
+            <select name="currency" id="currency" class="form-select @error('currency') is-invalid @enderror" required>
+                <option value="SYP" {{ old('currency', $property->currency ?? 'USD') == 'SYP' ? 'selected' : '' }}>ليرة سورية   (SYP)</option>
+
+                <option value="USD" {{ old('currency', $property->currency ?? 'USD') == 'USD' ? 'selected' : '' }}>دولار أمريكي (USD)</option>
+                <option value="EUR" {{ old('currency', $property->currency ?? 'USD') == 'EUR' ? 'selected' : '' }}>يورو (EUR)</option>
+                <option value="SAR" {{ old('currency', $property->currency ?? 'USD') == 'SAR' ? 'selected' : '' }}>ريال سعودي (SAR)</option>
+                <option value="AED" {{ old('currency', $property->currency ?? 'USD') == 'AED' ? 'selected' : '' }}>درهم إماراتي (AED)</option>
+            </select>
+            @error('currency')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        
 
         <!-- حقل النوع -->
         <div class="mb-3">
@@ -71,7 +94,29 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
+      
+        
+        <div class="mb-3">
+            <label for="directions" class="form-label">Directions </label>
+            <select name="directions[]" id="directions" class="form-select" multiple>
+                <option value="north" {{ in_array('north', old('directions', explode(',', $property->directions ?? ''))) ? 'selected' : '' }}>North</option>
+                <option value="south" {{ in_array('south', old('directions', explode(',', $property->directions ?? ''))) ? 'selected' : '' }}>South</option>
+                <option value="east" {{ in_array('east', old('directions', explode(',', $property->directions ?? ''))) ? 'selected' : '' }}>East</option>
+                <option value="west" {{ in_array('west', old('directions', explode(',', $property->directions ?? ''))) ? 'selected' : '' }}>West</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="num_balconies" class="form-label">Num of balconies </label>
+            <input type="number" name="num_balconies" id="num_balconies" class="form-control" value="{{ old('num_balconies', $property->num_balconies ?? 0) }}" min="0">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">  Is the property furnished?  </label>
+            <div>
+                <input type="radio" name="is_furnished" value="1" {{ old('is_furnished', $property->is_furnished ?? 0) == 1 ? 'checked' : '' }}> yes
+                <input type="radio" name="is_furnished" value="0" {{ old('is_furnished', $property->is_furnished ?? 0) == 0 ? 'checked' : '' }}> no
+            </div>
+        </div>
+        
         <!-- حقل عدد غرف النوم -->
         <div class="mb-3">
             <label for="num_bedrooms" class="form-label">Number of Bedrooms</label>

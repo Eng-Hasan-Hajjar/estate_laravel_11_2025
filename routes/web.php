@@ -4,21 +4,23 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PropertyTypeController;
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\PropertyImageController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+
+Route::get('/', [PropertyController::class, 'index_web'])->name('indexproperty');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 require __DIR__.'/auth.php';
-
-
  // روابط التحكم بالمستخدمين 
  Route::get('/users', [UserController::class, 'index'])->name('users.index'); // عرض قائمة المستخدمين
  Route::get('/users/create', [UserController::class, 'create'])->name('users.create'); // إضافة مستخدم جديد
@@ -29,12 +31,6 @@ require __DIR__.'/auth.php';
  Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy'); // حذف مستخدم
 
 
-
-
-
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\UserRoleController;
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
@@ -54,10 +50,6 @@ Route::get('template',function(){
 
 
 
-
-use App\Http\Controllers\PropertyController;
-use App\Http\Controllers\PropertyImageController;
-
 Route::resource('properties', PropertyController::class);
 Route::resource('properties.property-images', PropertyImageController::class);
 
@@ -65,7 +57,7 @@ use App\Http\Controllers\LocationController;
 Route::resource('locations', LocationController::class);
 use App\Http\Controllers\RegionController;
 Route::resource('regions', RegionController::class);
-use App\Http\Controllers\PropertyTypeController;
+
 Route::resource('property-types', PropertyTypeController::class);
 
 /*   website   */

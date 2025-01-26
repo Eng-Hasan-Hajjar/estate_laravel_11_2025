@@ -21,7 +21,8 @@
                                         <strong>Location:</strong> {{ $property->location }}
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Price:</strong> {{ number_format($property->price, 2) }} SYP
+                                        <strong>Price:</strong> {{ number_format($property->price, 2) }} 
+                                        <strong>{{ $property->currency }}</strong>
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Type:</strong> {{ ucfirst($property->type) }}
@@ -32,6 +33,21 @@
                                     <li class="list-group-item">
                                         <strong>Area:</strong> {{ $property->area }} sq. ft.
                                     </li>
+
+
+                                    <li class="list-group-item">
+                                        <strong> The directions is:  </strong>
+                                        @if($property->directions)
+                                            {{  $property->directions }}
+                                        @else
+                                        undefined
+                                        @endif
+                                    </li>
+
+                                    <li class="list-group-item"><strong> Balconies:</strong> {{ $property->num_balconies }}</li>
+                                    <li class="list-group-item"> <strong>Is furnished:</strong> {{ $property->is_furnished ? 'yes' : 'no' }}</li>
+
+
                                     <li class="list-group-item">
                                         <strong>Bedrooms:</strong> {{ $property->num_bedrooms }}
                                     </li>

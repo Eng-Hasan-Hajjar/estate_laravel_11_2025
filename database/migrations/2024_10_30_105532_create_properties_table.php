@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('title', 255);
             $table->text('description');
             $table->decimal('price', 12, 2);
-            $table->string('location', 255);
+          //  $table->string('currency', 10)->default('USD'); // إضافة حقل العملة وجعل الافتراضي "USD"
+           
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->float('area');
@@ -29,8 +30,6 @@ return new class extends Migration
             $table->integer('num_bathrooms');
             $table->enum('status', ['available', 'sold', 'rented', 'unavailable']);
             $table->timestamps();
-
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
