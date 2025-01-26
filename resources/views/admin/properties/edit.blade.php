@@ -49,13 +49,16 @@
 
         <!-- حقل النوع -->
         <div class="mb-3">
-            <label for="type" class="form-label">Type</label>
-            <select name="type" id="type" class="form-select @error('type') is-invalid @enderror" required>
-                <option value="apartment" {{ old('type', $property->type) == 'apartment' ? 'selected' : '' }}>Apartment</option>
-                <option value="villa" {{ old('type', $property->type) == 'villa' ? 'selected' : '' }}>Villa</option>
-                <option value="office" {{ old('type', $property->type) == 'office' ? 'selected' : '' }}>Office</option>
+            <label for="property_type_id" class="form-label">Property Type</label>
+            <select name="property_type_id" id="property_type_id" class="form-select @error('property_type_id') is-invalid @enderror" required>
+                <option value="">Select Property Type</option>
+                @foreach($propertyTypes as $propertyType)
+                    <option value="{{ $propertyType->id }}" {{ $property->property_type_id == $propertyType->id ? 'selected' : '' }}>
+                        {{ $propertyType->name }}
+                    </option>
+                @endforeach
             </select>
-            @error('type')
+            @error('property_type_id')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>

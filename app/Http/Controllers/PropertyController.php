@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImage;
@@ -24,7 +25,8 @@ class PropertyController extends Controller
 
     public function create()
     {
-        return view('admin.properties.create');
+        $propertyTypes = PropertyType::all(); // جلب جميع أنواع العقارات
+        return view('admin.properties.create', compact('propertyTypes'));
     }
 
 public function store(Request $request)
@@ -39,7 +41,7 @@ public function store(Request $request)
         'title' => 'required|max:255',
         'description' => 'required',
         'price' => 'required|numeric|max:999999999999999',
-        'type' => 'required',
+        'property_type_id' => 'required',
         'location' => 'required|max:255',
         'area' => 'required|numeric',
         'num_bedrooms' => 'required|integer',
@@ -54,7 +56,7 @@ public function store(Request $request)
         'price.required' => 'The price field is required.',
         'price.numeric' => 'The price must be a number.',
         'price.max' => 'The price exceeds the allowed range.',
-        'type.required' => 'The type field is required.',
+        'property_type_id.required' => 'The type field is required.',
         'location.required' => 'The location field is required.',
         'location.max' => 'The location must not exceed 255 characters.',
         'area.required' => 'The area field is required.',
@@ -118,7 +120,8 @@ public function show_web($id)
 
     public function edit(Property $property)
     {
-        return view('admin.properties.edit', compact('property'));
+        $propertyTypes = PropertyType::all();
+        return view('admin.properties.edit', compact('property', 'propertyTypes'));
     }
     public function update(Request $request, Property $property)
     {

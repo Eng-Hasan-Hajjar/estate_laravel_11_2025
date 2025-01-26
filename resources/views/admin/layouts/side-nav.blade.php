@@ -92,6 +92,13 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a  href="{{ route('property-types.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>property types</p>
+                </a>
+              </li>
+              
+              <li class="nav-item">
                 <a  href="{{ route('properties.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>properties</p>
