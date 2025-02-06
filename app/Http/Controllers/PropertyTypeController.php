@@ -9,7 +9,7 @@ class PropertyTypeController extends Controller
 {
     public function index()
     {
-        $propertyTypes = PropertyType::paginate(10);
+        $propertyTypes = PropertyType::get();
         return view('admin.property_types.index', compact('propertyTypes'));
     }
 

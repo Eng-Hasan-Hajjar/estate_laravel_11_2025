@@ -31,7 +31,7 @@
             @endforeach
         </tbody>
     </table>
-    {{ $regions->links() }}
+
 </div>
 
 @endsection

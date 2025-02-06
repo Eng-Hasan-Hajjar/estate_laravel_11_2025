@@ -21,8 +21,10 @@ class PropertyController extends Controller
     }
     public function index_web()
 {  $properties = Property::with('images')->paginate(10);
+    $propertyTypes = PropertyType::withCount('properties')->get(); // استرجاع الأنواع مع عدد العقارات
+   // dd($propertyTypes);
    // $properties = Property::latest()->get(); // جلب جميع العقارات وترتيبها من الأحدث
-    return view('website.index', compact('properties'));
+    return view('website.index', compact('properties','propertyTypes'));
 }
 
     public function create()

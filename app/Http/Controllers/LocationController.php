@@ -8,7 +8,7 @@ class LocationController extends Controller
 {
     public function index()
     {
-        $locations = Location::paginate(10);
+        $locations = Location::get();
         return view('admin.locations.index', compact('locations'));
     }
 

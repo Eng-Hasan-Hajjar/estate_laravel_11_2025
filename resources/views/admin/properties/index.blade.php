@@ -25,8 +25,9 @@
                     <tr>
                         <td>{{ $property->title }}</td>
                         <td>{{ optional($property->location)->name ?? 'N/A' }}</td>
+                        <td>{{ optional($property->property_type)->name ?? 'N/A' }}</td>
 
-                       <td>{{ $property->type }}</td>
+                      
                        <td class="d-flex justify-content-start align-items-center gap-3">  <!-- زيادة المسافة هنا -->
                         <a href="{{ route('properties.show', $property->id) }}" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i> View

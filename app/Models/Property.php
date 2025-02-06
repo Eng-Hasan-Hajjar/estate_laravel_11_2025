@@ -9,8 +9,9 @@ class Property extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title','user_id', 'description', 'price','currency', 'type', 'location', 'area', 'num_bedrooms',
-         'num_bathrooms', 'status', 'directions', 'num_balconies', 'is_furnished'
+        'title','user_id', 'description', 'price','currency', 'location', 'area', 'num_bedrooms',
+         'num_bathrooms', 'status', 'directions', 'num_balconies', 'is_furnished',
+         'property_type_id'
     ];
 
  
@@ -41,7 +42,7 @@ class Property extends Model
     }
     public function propertyType()
     {
-        return $this->belongsTo(PropertyType::class);
+        return $this->belongsTo(PropertyType::class, 'property_type_id');
     }
 
 }

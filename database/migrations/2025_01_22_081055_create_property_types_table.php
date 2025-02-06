@@ -17,9 +17,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('properties', function (Blueprint $table) {
-            $table->foreignId('property_type_id')->nullable()->constrained('property_types')->onDelete('set null');
-        });
+     
     }
 
     /**
@@ -27,10 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('properties', function (Blueprint $table) {
-            $table->dropForeign(['property_type_id']);
-            $table->dropColumn('property_type_id');
-        });
+      
         Schema::dropIfExists('property_types');
     }
 };

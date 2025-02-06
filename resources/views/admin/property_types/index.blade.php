@@ -7,7 +7,7 @@
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
-                <th>ID</th>
+                
                 <th>Name</th>
                 <th>Actions</th>
             </tr>
@@ -15,7 +15,7 @@
         <tbody>
             @foreach($propertyTypes as $propertyType)
                 <tr>
-                    <td>{{ $propertyType->id }}</td>
+                
                     <td>{{ $propertyType->name }}</td>
                     <td>
                         <a href="{{ route('property-types.edit', $propertyType) }}" class="btn btn-warning">Edit</a>
@@ -29,7 +29,7 @@
             @endforeach
         </tbody>
     </table>
-    {{ $propertyTypes->links() }}
+  
 </div>
 
 @endsection

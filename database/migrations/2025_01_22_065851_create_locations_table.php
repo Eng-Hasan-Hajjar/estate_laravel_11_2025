@@ -18,10 +18,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // تعديل جدول العقارات لإضافة مفتاح أجنبي للموقع
-        Schema::table('properties', function (Blueprint $table) {
-            $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('cascade');
-        });
+  
     }
 
     /**
@@ -29,10 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('properties', function (Blueprint $table) {
-            $table->dropForeign(['location_id']);
-            $table->dropColumn('location_id');
-        });
+    
         Schema::dropIfExists('locations');
     }
 };

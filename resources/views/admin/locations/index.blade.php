@@ -29,7 +29,7 @@
                             <form action="{{ route('locations.destroy', $location->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -37,7 +37,7 @@
             </tbody>
         </table>
 
-        {{ $locations->links() }}
+      
     </div>
 
 @endsection
