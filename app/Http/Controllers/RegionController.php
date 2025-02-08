@@ -8,12 +8,31 @@ use Illuminate\Http\Request;
 
 class RegionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
+{
+    $query = Region::query();
+
+    // فلترة بالاسم
+    if ($request->has('name') && $request->name != '') {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    // فلترة بالموقع (location_id)
+    if ($request->has('location_id') && $request->location_id != '') {
+        $query->where('location_id', $request->location_id);
+    }
+
+    $regions = $query->with('location')->get();
+    $locations = Location::all(); // للحصول على قائمة المواقع لعرضها في الفلترة
+
+    return view('admin.regions.index', compact('regions', 'locations'));
+}
+   /* public function index()
     {
         $regions = Region::with('location')->get();
         return view('admin.regions.index', compact('regions'));
     }
-
+*/
     public function create()
     {
         $locations = Location::all();

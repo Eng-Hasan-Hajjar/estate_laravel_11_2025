@@ -12,6 +12,56 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
 class PropertyController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = Property::query();
+    
+        // فلترة بالموقع (location_id)
+        if ($request->has('location_id') && $request->location_id != '') {
+            $query->where('location_id', $request->location_id);
+        }
+    
+        // فلترة بنوع العقار (property_type_id)
+        if ($request->has('property_type_id') && $request->property_type_id != '') {
+            $query->where('property_type_id', $request->property_type_id);
+        }
+    
+        // فلترة بالسعر (price)
+        if ($request->has('min_price') && $request->min_price != '') {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->has('max_price') && $request->max_price != '') {
+            $query->where('price', '<=', $request->max_price);
+        }
+    
+        // فلترة بعدد الغرف (num_bedrooms)
+        if ($request->has('num_bedrooms') && $request->num_bedrooms != '') {
+            $query->where('num_bedrooms', $request->num_bedrooms);
+        }
+    
+        // فلترة بعدد الحمامات (num_bathrooms)
+        if ($request->has('num_bathrooms') && $request->num_bathrooms != '') {
+            $query->where('num_bathrooms', $request->num_bathrooms);
+        }
+    
+        // فلترة بالاتجاهات (directions)
+        if ($request->has('directions') && $request->directions != '') {
+            $query->where('directions', 'like', '%' . $request->directions . '%');
+        }
+    
+        // فلترة بالحالة (status)
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+    
+        // جلب البيانات مع التقسيم (Pagination)
+        $properties = $query->with(['images', 'location'])->paginate(10);
+        $locations = Location::all(); // للحصول على قائمة المواقع لعرضها في الفلترة
+        $propertyTypes = PropertyType::all(); // للحصول على قائمة أنواع العقارات لعرضها في الفلترة
+    
+        return view('admin.properties.index', compact('properties', 'locations', 'propertyTypes'));
+    }
+    /*
     public function index()
     {
         //$comments = Comment::where('property_id', $propertyId)->get();
@@ -19,6 +69,8 @@ class PropertyController extends Controller
         $properties = Property::with(['images', 'location'])->paginate(10);
         return view('admin.properties.index', compact('properties','locations'));
     }
+
+    */
     public function index_web()
 {  $properties = Property::with('images')->paginate(10);
     $propertyTypes = PropertyType::withCount('properties')->get(); // استرجاع الأنواع مع عدد العقارات
@@ -36,6 +88,7 @@ class PropertyController extends Controller
 
 public function store(Request $request)
 {
+    
     // التحقق من أن المستخدم مسجل دخول
     if (!auth()->check()) {
         return redirect()->route('login')->with('error', 'You must be logged in to create a property.');
@@ -85,6 +138,7 @@ public function store(Request $request)
         'num_balconies.integer' => 'عدد الشرفات يجب أن يكون رقمًا صحيحًا.',
         'is_furnished.boolean' => 'يجب أن تكون القيمة إما نعم أو لا.',
     ]);
+    //dd($request);
     // تحويل الاتجاهات إلى نص إذا تم تحديدها
     if ($request->has('directions')) {
         $validatedData['directions'] = implode(',', $request->directions);
@@ -95,11 +149,11 @@ public function store(Request $request)
     $validatedData['property_type_id'] = 'property_type_id'; 
     // إضافة user_id إلى البيانات للتحقق من ارتباط العقار بالمستخدم الحالي
     $validatedData['user_id'] = Auth::id(); // تأكد من أن المستخدم مسجل دخول
-
+//dd($validatedData);
     try {
         // إنشاء سجل العقار
         $property = Property::create($validatedData);
-
+//dd($property);
         // التحقق من رفع الصورة وتخزينها
         if ($request->hasFile('main_image')) {
             $path = $request->file('main_image')->store('property_images', 'public');

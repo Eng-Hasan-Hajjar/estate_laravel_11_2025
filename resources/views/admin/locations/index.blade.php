@@ -8,7 +8,21 @@
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
+
         
+        <form action="{{ route('locations.index') }}" method="GET">
+            <div class="form-group">
+                <label for="name">Filter by Name:</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ request('name') }}">
+            </div>
+            <div class="form-group">
+                <label for="description">Filter by Description:</label>
+                <input type="text" name="description" id="description" class="form-control" value="{{ request('description') }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{{ route('locations.index') }}" class="btn btn-secondary">Reset</a>
+        </form>
+
         <table class="table mt-3">
             <thead>
                 <tr>

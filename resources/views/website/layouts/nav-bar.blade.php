@@ -36,7 +36,7 @@
                             >
                                 Dashboard
                             </a>
-                            <a href="" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
+                            <a href="{{ url('/properties/create') }}" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
                             
                         @else
                             <a

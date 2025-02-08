@@ -6,12 +6,32 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
+
+    public function index(Request $request)
+{
+    $query = Location::query();
+
+    // فلترة بالاسم
+    if ($request->has('name') && $request->name != '') {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    // فلترة بالوصف
+    if ($request->has('description') && $request->description != '') {
+        $query->where('description', 'like', '%' . $request->description . '%');
+    }
+
+    $locations = $query->get();
+
+    return view('admin.locations.index', compact('locations'));
+}
+    /*
     public function index()
     {
         $locations = Location::get();
         return view('admin.locations.index', compact('locations'));
     }
-
+*/
     public function create()
     {
         return view('admin.locations.create');
