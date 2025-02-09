@@ -14,6 +14,7 @@ class PropertyController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Property::class);
         $query = Property::query();
     
         // فلترة بالموقع (location_id)
@@ -81,6 +82,7 @@ class PropertyController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Property::class);
         $locations=Location::all();
         $propertyTypes = PropertyType::all(); // جلب جميع أنواع العقارات
         return view('admin.properties.create', compact('propertyTypes','locations'));
@@ -88,7 +90,7 @@ class PropertyController extends Controller
 
 public function store(Request $request)
 {
-    
+    $this->authorize('create', Property::class);
     // التحقق من أن المستخدم مسجل دخول
     if (!auth()->check()) {
         return redirect()->route('login')->with('error', 'You must be logged in to create a property.');
@@ -177,6 +179,8 @@ public function store(Request $request)
 
 public function show(Property $property)
 {
+    $this->authorize('view', $property);
+
     // تحميل الصورة الرئيسية والصور الأخرى للعقار
     $property->load('mainImage', 'images');
    // dd($property->mainImage->image_url);
@@ -196,12 +200,14 @@ public function show_web($id)
 
     public function edit(Property $property)
     {
+        $this->authorize('update', $property);
         $locations=Location::all();
         $propertyTypes = PropertyType::all();
         return view('admin.properties.edit', compact('property', 'propertyTypes','locations'));
     }
     public function update(Request $request, Property $property)
     {
+        $this->authorize('update', $property);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
@@ -275,6 +281,7 @@ public function show_web($id)
 
     public function destroy(Property $property)
     {
+        $this->authorize('delete', $property);
                // حذف الصور المرتبطة
                foreach ($property->images as $image) {
                 Storage::disk('public')->delete($image->image_url);

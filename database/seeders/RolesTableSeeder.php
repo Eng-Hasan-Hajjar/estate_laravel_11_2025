@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
+
 
 class RolesTableSeeder extends Seeder
 {
@@ -15,7 +16,8 @@ class RolesTableSeeder extends Seeder
         // Define the roles
         $roles = [
             'admin',
-            'employee',
+            'manager',
+            'user',
             'seller',
             'buyer',
             'tenant',
@@ -25,7 +27,7 @@ class RolesTableSeeder extends Seeder
         // Loop through each role and create it if it doesn't exist
         foreach ($roles as $role) {
             Role::firstOrCreate(
-                ['name' => $role, 'guard_name' => 'role'] // Set the guard_name to 'role'
+                ['name' => $role] // Set the guard_name to 'role'
             );
         }
     }

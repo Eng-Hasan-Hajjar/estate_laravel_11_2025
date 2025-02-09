@@ -5,7 +5,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="{{asset('admin/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="{{asset('admin/dist/img/AdminLTELogo.png')}}" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light"> Estates System</span>
     </a>
 
@@ -20,7 +20,7 @@
         <div class="info">
 
 
-          <a href="#" class="d-block">{{ auth()->user()->name }} || Role: {{ auth()->user()->getRoleNames()->first() }}</a>
+          <a href="#" class="d-block">{{ auth()->user()->name }} </a>
           <span class="text-muted"></span>
           <!-- صلاحيات المستخدم -->
          
@@ -104,30 +104,48 @@
                   <p>properties</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="./users" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>users</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./roles" class="nav-link ">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>roles</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./permissions" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>permissions</p>
-                </a>
-              </li>
+
+              @if(auth()->user()->hasRole('Admin'))
+                        <li class="nav-item">
+                          <a href="./users" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>users</p>
+                          </a>
+                        </li>
+             
+                        <li class="nav-item">
+                          <a href="./roles" class="nav-link ">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>roles</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./permissions" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>permissions</p>
+                          </a>
+                        </li>
+               @endif
               <li class="nav-item">
                 <a  href="/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>website</p>
                 </a>
               </li>
+              <li class="nav-item" style="margin-bottom: 10px">
+                
+                <a class="nav-link"style="margin-bottom: 10px" href="{{ route('logout') }}" 
+                    onclick="event.preventDefault(); 
+                    document.getElementById('logout-form').submit();">
+                  
+                    <i class="far fa-circle nav-icon"></i>
+                    {{ __('Logout') }} 
+                </a>
+                 <form id="logout-form" action="{{ route('logout') }}" 
+                 method="POST" class="d-none">@csrf
+                </form>
+              </li>
+             
             </ul>
             
           </li>

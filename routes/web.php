@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Models\Role;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PropertyTypeController;
 use App\Http\Controllers\PropertyController;
@@ -29,15 +29,29 @@ require __DIR__.'/auth.php';
  Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit'); // تعديل مستخدم
  Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update'); // تحديث بيانات المستخدم
  Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy'); // حذف مستخدم
+ 
+ //Route::match(['get', 'post'], '/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('user.assign.role');
 
+ Route::post('/users/assign-role', [UserController::class, 'assignRole'])->name('user.assign.role');
 
+ //Route::post('/users/{user}/assign-role', [UserController::class, 'assignRole'])->name('user.assign.role');
+ Route::delete('/users/{user}/remove-role/{role}', [UserController::class, 'removeRole'])->name('user.remove.role');
+ 
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::get('users/roles', [UserRoleController::class, 'index'])->name('users.roles.index');
-    Route::post('users/{user}/roles', [UserRoleController::class, 'assignRole'])->name('users.roles.assign');
 });
+
+use App\Http\Controllers\AdminDashboardController;
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
+
+});
+
+
 
 
 
@@ -65,7 +79,7 @@ Route::resource('property-types', PropertyTypeController::class);
 Route::post('/properties/filterweb', [PropertyController::class, 'filterweb'])->name('properties.filterweb');
 
 
-Route::get('indexproperty', [PropertyController::class, 'index_web'])->name('indexproperty');
+Route::get('indexproperty', [PropertyController::class, 'index_web'])->name('indexproperty2');
 
 
 Route::get('about-web',function(){
@@ -114,12 +128,4 @@ Route::patch('comments/{comment}', [CommentController::class, 'update'])->name('
 
 
 
-
-use App\Http\Controllers\AdminDashboardController;
-
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
-
-});
 

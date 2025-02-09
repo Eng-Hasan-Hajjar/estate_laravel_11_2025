@@ -6,17 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-use Spatie\Permission\Models\Role;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable ;
-    use HasRoles;
+   
 
-    protected $guard_name = 'role'; // or whatever guard you want to use
     /**
      * The attributes that are mass assignable.
      *
@@ -51,4 +50,47 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+        /**
+     * العلاقة بين المستخدمين والأدوار
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+       /**
+     * تعيين دور للمستخدم
+     */
+    public function assignRole($roleName)
+    {
+        $role = Role::where('name', $roleName)->first();
+        if ($role) {
+            $this->roles()->syncWithoutDetaching([$role->id]); // يضيف الدور فقط إن لم يكن موجودًا
+        }
+    }
+    
+
+    /**
+     * إزالة دور من المستخدم
+     */
+    public function removeRole($roleName)
+    {
+        $role = Role::where('name', $roleName)->first();
+        if ($role && $this->hasRole($roleName)) {
+            $this->roles()->detach($role->id);
+        }
+    }
+    
+
+    /**
+     * التحقق مما إذا كان المستخدم لديه دور معين
+     */
+    public function hasRole($roleName): bool
+    {
+        return $this->roles->contains('name', $roleName);
+    }
+    
+
+
 }

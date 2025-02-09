@@ -8,6 +8,8 @@ use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+ 
     /**
      * Register any application services.
      */
@@ -21,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::model('role', \Spatie\Permission\Models\Role::class);
+        
     }
 }

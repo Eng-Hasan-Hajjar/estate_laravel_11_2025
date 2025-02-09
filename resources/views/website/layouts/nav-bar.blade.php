@@ -10,7 +10,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto">
+                    <div class="navbar-nav ms-auto"  style="margin-right:20px">
                         <a href={{url('indexproperty')}} class="nav-item nav-link active">Home</a>
                         <a href="advance-search" class="nav-item nav-link">Search</a>
                         <a href="about-web" class="nav-item nav-link">About</a>
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                        
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                 
                     </div>
 
 
@@ -36,7 +36,18 @@
                             >
                                 Dashboard
                             </a>
-                            <a href="{{ url('/properties/create') }}" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
+                        
+                            <a href="{{ route('logout') }}" 
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                onclick="event.preventDefault(); 
+                                document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }} 
+                            </a>
+                                <form id="logout-form" action="{{ route('logout') }}" 
+                                method="POST" class="d-none">@csrf
+                            </form>
+                              
+                             
                             
                         @else
                             <a

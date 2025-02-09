@@ -13,22 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            PermissionsTableSeeder::class,
+            RolesTableSeeder::class,
+            RolePermissionSeeder::class,
+            LocationSeeder::class,
+            PropertyTypeSeeder::class,
+            RegionSeeder::class,
         ]);
-
-        // استدعاء Seeder الصلاحيات
-        $this->call(PermissionsTableSeeder::class);
-
-        // استدعاء Seeder الأدوار
-        $this->call(RolesTableSeeder::class);
-
-        // استدعاء Seeder ربط الأدوار والصلاحيات
-        $this->call(RolePermissionSeeder::class);
-
 
     }
 }

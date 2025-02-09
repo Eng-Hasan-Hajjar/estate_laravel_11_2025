@@ -8,8 +8,7 @@
         "php": "^8.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "psy/psysh": "@stable",
-        "spatie/laravel-permission": "^6.9"
+        "psy/psysh": "@stable"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

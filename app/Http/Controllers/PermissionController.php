@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+
 
 class PermissionController extends Controller
 {
     public function index()
     {
         $permissions = Permission::paginate(10); // تأكد من استخدام paginate هنا
-        return view('permissions.index', compact('permissions'));
+        return view('admin.permissions.index', compact('permissions'));
 
     
     }
 
     public function create()
     {
-        return view('permissions.create');
+        return view('admin.permissions.create');
     }
 
     public function store(Request $request)

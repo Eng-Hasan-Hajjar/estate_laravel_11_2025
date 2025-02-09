@@ -2,49 +2,76 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
+use DB;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+
+
 
 class RolePermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // التأكد من وجود الصلاحيات المطلوبة بالحارس المحدد
-        $permissions = [
-            'manage users',
-            'manage properties',
-            'manage contracts',
-            'add property',
-            'interact with buyers',
-            'buy property',
-            'rent property',
-            'manage mortgages',
-        ];
+    // الأدوار المتاحة
+    $roles = [
+        ['name' => 'admin'],
+        ['name' => 'manager'],
+        ['name' => 'user'],
+        ['name' => 'seller'],
+        ['name' => 'buyer'],
+        ['name' => 'tenant'],
+        ['name' => 'mortgager'],
+    ];
 
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate(
-                ['name' => $permission, 'guard_name' => 'role'] // تعيين guard_name إلى 'role'
-            );
+    // الصلاحيات المتاحة
+    $permissions = [
+        ['name' => 'manage users'],
+        ['name' => 'manage properties'],
+        ['name' => 'manage contracts'],
+        ['name' => 'add property'],
+        ['name' => 'interact with buyers'],
+        ['name' => 'buy property'],
+        ['name' => 'rent property'],
+        ['name' => 'manage mortgages'],
+    ];
+
+    // إدخال الأدوار في قاعدة البيانات
+    DB::table('roles')->insertOrIgnore($roles);
+
+    // إدخال الصلاحيات في قاعدة البيانات
+    DB::table('permissions')->insertOrIgnore($permissions);
+
+    // جلب معرّفات الأدوار والصلاحيات بعد الإدراج
+    $rolesData = DB::table('roles')->pluck('id', 'name')->toArray();
+    $permissionsData = DB::table('permissions')->pluck('id', 'name')->toArray();
+
+    // تحديد صلاحيات كل دور
+    $rolePermissions = [
+        'admin'     => ['manage users', 'manage properties', 'manage contracts'],
+        'manager'   => ['manage properties'],
+        'user'      => ['manage properties'],
+        'seller'    => ['add property', 'interact with buyers'],
+        'buyer'     => ['buy property'],
+        'tenant'    => ['rent property'],
+        'mortgager' => ['manage mortgages'],
+    ];
+
+    // إدخال العلاقات بين الأدوار والصلاحيات
+    $rolePermissionData = [];
+
+    foreach ($rolePermissions as $role => $perms) {
+        foreach ($perms as $perm) {
+            if (isset($rolesData[$role]) && isset($permissionsData[$perm])) {
+                $rolePermissionData[] = [
+                    'role_id' => $rolesData[$role],
+                    'permission_id' => $permissionsData[$perm],
+                ];
+            }
         }
+    }
 
-        // تأكد من أن الأدوار موجودة بالحارس المحدد
-        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'role']);
-        $employee = Role::firstOrCreate(['name' => 'employee', 'guard_name' => 'role']);
-        $seller = Role::firstOrCreate(['name' => 'seller', 'guard_name' => 'role']);
-        $buyer = Role::firstOrCreate(['name' => 'buyer', 'guard_name' => 'role']);
-        $tenant = Role::firstOrCreate(['name' => 'tenant', 'guard_name' => 'role']);
-        $mortgager = Role::firstOrCreate(['name' => 'mortgager', 'guard_name' => 'role']);
+    DB::table('role_permission')->insertOrIgnore($rolePermissionData);
 
-        // ربط الصلاحيات بالأدوار
-        $admin->givePermissionTo(['manage users', 'manage properties', 'manage contracts']);
-        $employee->givePermissionTo('manage properties');
-        $seller->givePermissionTo(['add property', 'interact with buyers']);
-        $buyer->givePermissionTo('buy property');
-        $tenant->givePermissionTo('rent property');
-        $mortgager->givePermissionTo('manage mortgages');
     }
 }

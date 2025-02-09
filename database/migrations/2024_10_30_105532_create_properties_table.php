@@ -22,12 +22,17 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 12, 2);
           //  $table->string('currency', 10)->default('USD'); // إضافة حقل العملة وجعل الافتراضي "USD"
-           
+          $table->string('currency', 10)->default('USD');
+
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->float('area');
             $table->integer('num_bedrooms');
             $table->integer('num_bathrooms');
+            $table->string('directions')->nullable(); // الاتجاهات (يمكن أن تكون أكثر من واحدة)
+            $table->integer('num_balconies')->default(0); // عدد الشرفات
+            $table->boolean('is_furnished')->default(false); // العقار مفروش أم لا
+
             $table->enum('status', ['available', 'sold', 'rented', 'unavailable']);
             $table->timestamps();
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('cascade');
