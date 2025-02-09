@@ -18,14 +18,18 @@
                             <div class="card-body p-3">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
-                                        <strong>Location:</strong> {{ $property->location }}
+                                        <strong>Location:</strong>  {{ $property->location->name ?? 'non available ' }}
                                     </li>
+                                    <li class="list-group-item">
+                                        <strong>Region:</strong>  {{ $property->region->name ?? 'non available ' }}
+                                    </li>
+
                                     <li class="list-group-item">
                                         <strong>Price:</strong> {{ number_format($property->price, 2) }} 
                                         <strong>{{ $property->currency }}</strong>
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Type:</strong> {{ ucfirst($property->type) }}
+                                        <strong>Type:</strong> {{ ucfirst($property->propertyType->name) }}
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Description:</strong> {{ $property->description }}

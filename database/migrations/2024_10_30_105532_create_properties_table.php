@@ -36,6 +36,8 @@ return new class extends Migration
             $table->enum('status', ['available', 'sold', 'rented', 'unavailable']);
             $table->timestamps();
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('cascade');
+            $table->foreignId('region_id')->nullable()->constrained('regions')->onDelete('cascade');
+     
             $table->foreignId('property_type_id')->nullable()->constrained('property_types')->onDelete('set null');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

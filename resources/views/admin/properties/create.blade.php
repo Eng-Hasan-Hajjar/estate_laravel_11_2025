@@ -43,6 +43,24 @@
                   <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
         </div>
+       <!-- حقل المنطقة -->
+       <div class="mb-3">
+        <label for="region_id" class="form-label"> Region</label>
+        <select name="region_id" id="location_id" class="form-select @error('region_id') is-invalid @enderror" required>
+            <option value="">Select region </option>
+            @foreach($regions as $region)
+                <option value="{{ $region->id }}" {{ old('region') == $region->id ? 'selected' : '' }}>
+                    {{ $region->name }}
+                </option>
+            @endforeach
+        </select>
+            @error('region')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+    </div>
+    
+
+
         <!-- حقل السعر -->
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
@@ -163,4 +181,30 @@
         <button type="submit" class="btn btn-primary">Add Property</button>
     </form>
 </div>
+
+
+
+
+
+
+
+
+<script>
+    document.getElementById('locationSelect').addEventListener('change', function() {
+        var locationId = this.value;
+        var regionSelect = document.getElementById('regionSelect');
+    
+        fetch(`/api/regions?location_id=${locationId}`)
+            .then(response => response.json())
+            .then(data => {
+                regionSelect.innerHTML = '<option value="">-- Choose Region --</option>';
+                data.forEach(region => {
+                    regionSelect.innerHTML += `<option value="${region.id}">${region.name}</option>`;
+                });
+            });
+    });
+    </script>
+
+
+
 @endsection

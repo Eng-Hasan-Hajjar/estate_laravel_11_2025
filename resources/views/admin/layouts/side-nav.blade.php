@@ -1,8 +1,13 @@
 
 
 
+@if(auth()->user()->hasRole('admin')|| auth()->user()->hasRole('manager'))
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+ @else
+        <aside class="main-sidebar sidebar-light-primary elevation-4">
+@endif
+
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
       <img src="{{asset('admin/dist/img/AdminLTELogo.png')}}" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -20,7 +25,7 @@
         <div class="info">
 
 
-          <a href="#" class="d-block">{{ auth()->user()->name }} </a>
+          <a href="#" class="d-block">{{ auth()->user()->name }} --  {{ auth()->user()->roles->pluck('name')->implode(', ') }} </a>
           <span class="text-muted"></span>
           <!-- صلاحيات المستخدم -->
          
@@ -78,26 +83,27 @@
                   <p>home</p>
                 </a>
               </li>
-        
-              <li class="nav-item">
-                <a  href="{{ route('locations.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>locations</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a  href="{{ route('regions.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>regions</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a  href="{{ route('property-types.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>property types</p>
-                </a>
-              </li>
-              
+              @if(auth()->user()->hasRole('admin')|| auth()->user()->hasRole('manager'))
+                  <li class="nav-item">
+                    <a  href="{{ route('locations.index') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>locations</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a  href="{{ route('regions.index') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>regions</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a  href="{{ route('property-types.index') }}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>property types</p>
+                    </a>
+                  </li>
+              @endif
+
               <li class="nav-item">
                 <a  href="{{ route('properties.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -105,7 +111,7 @@
                 </a>
               </li>
 
-              @if(auth()->user()->hasRole('Admin'))
+              @if(auth()->user()->hasRole('admin'))
                         <li class="nav-item">
                           <a href="./users" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>

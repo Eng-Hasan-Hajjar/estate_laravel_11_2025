@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use App\Models\PropertyType;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class PropertyController extends Controller
 {
+    use AuthorizesRequests;
     public function index(Request $request)
     {
         $this->authorize('viewAny', Property::class);
@@ -73,19 +76,22 @@ class PropertyController extends Controller
 
     */
     public function index_web()
-{  $properties = Property::with('images')->paginate(10);
-    $propertyTypes = PropertyType::withCount('properties')->get(); // استرجاع الأنواع مع عدد العقارات
-   // dd($propertyTypes);
-   // $properties = Property::latest()->get(); // جلب جميع العقارات وترتيبها من الأحدث
-    return view('website.index', compact('properties','propertyTypes'));
-}
+    { 
+        $properties = Property::with('images')->paginate(10);
+        $propertyTypes = PropertyType::withCount('properties')->get(); // استرجاع الأنواع مع عدد العقارات
+    // dd($propertyTypes);
+    // $properties = Property::latest()->get(); // جلب جميع العقارات وترتيبها من الأحدث
+        return view('website.index', compact('properties','propertyTypes'));
+    }
 
     public function create()
     {
         $this->authorize('create', Property::class);
-        $locations=Location::all();
+       
+        $locations=Location::with('regions')->get();
+        $regions=Region::all();
         $propertyTypes = PropertyType::all(); // جلب جميع أنواع العقارات
-        return view('admin.properties.create', compact('propertyTypes','locations'));
+        return view('admin.properties.create', compact('regions','propertyTypes','locations'));
     }
 
 public function store(Request $request)
@@ -114,6 +120,7 @@ public function store(Request $request)
         'main_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         'directions' => 'nullable|array',
         'directions.*' => 'in:north,south,east,west',
+        'region_id' => 'required|exists:regions,id',
     ], [
         // رسائل مخصصة لكل حقل
         'title.required' => 'The title field is required.',
@@ -123,6 +130,7 @@ public function store(Request $request)
         'price.numeric' => 'The price must be a number.',
         'price.max' => 'The price exceeds the allowed range.',
         'property_type_id.required' => 'The type field is required.',
+        'region_id.required' => 'The region field is required.',
         'location_id.required' => 'The location field is required.',
         'location_id.max' => 'The location must not exceed 255 characters.',
         'area.required' => 'The area field is required.',
@@ -147,8 +155,18 @@ public function store(Request $request)
     } else {
         $validatedData['directions'] = null;
     }
+
+    /*
+    $validatedData['region_id'] = 'region_id'; 
     $validatedData['location_id'] = 'location_id'; 
     $validatedData['property_type_id'] = 'property_type_id'; 
+
+
+
+    */
+    $validatedData['region_id'] = $request->region_id;
+    $validatedData['location_id'] = $request->location_id;
+    $validatedData['property_type_id'] = $request->property_type_id;
     // إضافة user_id إلى البيانات للتحقق من ارتباط العقار بالمستخدم الحالي
     $validatedData['user_id'] = Auth::id(); // تأكد من أن المستخدم مسجل دخول
 //dd($validatedData);
@@ -182,10 +200,11 @@ public function show(Property $property)
     $this->authorize('view', $property);
 
     // تحميل الصورة الرئيسية والصور الأخرى للعقار
-    $property->load('mainImage', 'images');
+    $property->load('mainImage', 'images', 'location.region', 'propertyType', 'location.region');
    // dd($property->mainImage->image_url);
     // استخدام الـ property->id بدلاً من $propertyId
     $comments = Comment::where('property_id', $property->id)->get();
+
 
     // تمرير الـ property والـ comments إلى الـ View
     return view('admin.properties.show', compact('property', 'comments'));

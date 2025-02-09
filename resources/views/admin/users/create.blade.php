@@ -5,7 +5,22 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+
                 <div class="card-header">Add New User</div>
+
+                
+                    <!-- عرض الأخطاء العامة في أعلى النموذج -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <strong>There were some problems with your input:</strong>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
 
                 <div class="card-body">
                     <form action="{{ route('users.store') }}" method="POST">
