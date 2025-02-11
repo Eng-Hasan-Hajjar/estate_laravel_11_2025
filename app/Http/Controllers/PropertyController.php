@@ -77,12 +77,28 @@ class PropertyController extends Controller
     */
     public function index_web()
     { 
+        $locations = Location::all();
+        $propertyTypes = PropertyType::withCount('properties')->get(); // جلب الأنواع مع عدد العقارات
         $properties = Property::with('images')->paginate(10);
-        $propertyTypes = PropertyType::withCount('properties')->get(); // استرجاع الأنواع مع عدد العقارات
+    
+        return view('website.index', compact('properties', 'propertyTypes', 'locations'));
+        /*
+        $locations=Location::all();
+        $propertyTypes = PropertyType::all();
+        $properties = Property::with('images')->paginate(10);
+        $propertyTypescount = PropertyType::withCount('properties')->chunk(100, function ($types) {
+            foreach ($types as $type) {
+                echo $type->name . ': ' . $type->properties_count . '<br>';
+            }
+        }); // استرجاع الأنواع مع عدد العقارات
     // dd($propertyTypes);
     // $properties = Property::latest()->get(); // جلب جميع العقارات وترتيبها من الأحدث
-        return view('website.index', compact('properties','propertyTypes'));
-    }
+        return view('website.index', compact('properties','propertyTypes','propertyTypescount','locations'));
+   
+   
+   */
+  
+}
 
     public function create()
     {
@@ -234,7 +250,7 @@ public function show_web($id)
             'currency' => 'required|string|max:10',
 
             'property_type_id' => 'required',
-            'location_id' => 'required|max:255',
+            'location_id' => 'required',
             'area' => 'required|numeric',
             'num_bedrooms' => 'required|integer',
             'num_bathrooms' => 'required|integer',
@@ -319,18 +335,21 @@ public function show_web($id)
         $properties = Property::with('images')->paginate(10);
         return view('website.pages.property-list', compact('properties'));
     }
-
     public function filter(Request $request)
     {
-        // تعريف متغير `query` لبدء إنشاء الاستعلام.
+        // إنشاء الاستعلام مع تحميل الصور
         $query = Property::with('images');
-
-  
-        // فلترة حسب الموقع
-        if ($request->filled('location')) {
-            $query->where('location', 'like', '%' . $request->location . '%');
+    
+        // فلترة بالموقع
+        if ($request->filled('location_id')) {
+            $query->where('location_id', $request->location_id);
         }
-
+    
+        // فلترة بنوع العقار
+        if ($request->filled('property_type_id')) {
+            $query->where('property_type_id', $request->property_type_id);
+        }
+    
         // فلترة حسب السعر
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->min_price);
@@ -338,28 +357,23 @@ public function show_web($id)
         if ($request->filled('max_price')) {
             $query->where('price', '<=', $request->max_price);
         }
-
-        // فلترة حسب النوع
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
-        }
-
+    
         // فلترة حسب عدد الغرف
         if ($request->filled('num_bedrooms')) {
             $query->where('num_bedrooms', '>=', $request->num_bedrooms);
         }
-
-        // فلترة حسب الحالة
+    
+        // فلترة حسب الحالة (للبيع أو للإيجار)
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-
+    
         // تنفيذ الاستعلام وجلب النتائج مع التصفح
         $properties = $query->paginate(10);
-
-        return view('admin.properties.index', compact('properties'));
+    
+        // إرسال القيم المحددة مع العرض للحفاظ على القيم المحددة في النموذج
+        return view('website.properties', compact('properties'))->with($request->all());
     }
-
 
     public function filterweb(Request $request)
     {
@@ -372,17 +386,31 @@ public function show_web($id)
                   ->orWhere('description', 'like', '%' . $request->keyword . '%');
         }
 
-        if ($request->filled('location')) {
-            $query->where('location', 'like', '%' . $request->location . '%');
+       
+
+        // فلترة بالموقع (location_id)
+        if ($request->has('location_id') && $request->location_id != '') {
+            $query->where('location_id', $request->location_id);
         }
-
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
+        // فلترة بنوع العقار (property_type_id)
+        if ($request->has('property_type_id') && $request->property_type_id != '') {
+            $query->where('property_type_id', $request->property_type_id);
         }
+        $locations=Location::all();
+        $propertyTypes = PropertyType::all();
 
-        $properties = $query->paginate(10);
+        $properties = $query->with(['images', 'location','propertyType'])->paginate(10);
 
-        return view('website.index', compact('properties'));
+       // $properties = $query->paginate(10);
+
+        return view('website.index', compact('properties','propertyTypes','locations'));
     }
+
+
+
+
+
+    
+
 
 }

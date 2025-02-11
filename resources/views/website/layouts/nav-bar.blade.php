@@ -12,7 +12,7 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto"  style="margin-right:20px">
                         <a href={{url('indexproperty')}} class="nav-item nav-link active">Home</a>
-                        <a href="advance-search" class="nav-item nav-link">Search</a>
+                        <a href="{{ route('search') }}"  class="nav-item nav-link">Search</a>
                         <a href="about-web" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>

@@ -24,6 +24,10 @@
         <!-- Search Start -->
         @include('website.layouts.search')
         <!-- Search End -->
+        
+        <!-- Property List Start -->
+        @include('website.layouts.property-list')
+        <!-- Property List End -->
 
 
         <!-- Category Start -->
@@ -36,10 +40,7 @@
         <!-- About End -->
 
 
-        <!-- Property List Start -->
-        @include('website.layouts.property-list')
-        <!-- Property List End -->
-
+   
 
         <!-- Call to Action Start -->
         @include('website.layouts.call-action')

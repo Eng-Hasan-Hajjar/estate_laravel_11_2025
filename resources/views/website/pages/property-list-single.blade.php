@@ -102,9 +102,10 @@
             <div class="details-box">
                 <h4>Details</h4>
                 <p><strong>Price:</strong> ${{ number_format($property->price, 2) }}</p>
-                <p><strong>Location:</strong> {{ $property->location }}</p>
+                <p><strong>Location:</strong> {{ $property->location->name }}</p>
+                <p><strong>Region:</strong> {{ $property->region->name }}</p>
                 <p><strong>Status:</strong> {{ $property->status }}</p>
-                <p><strong>Type:</strong> {{ $property->type }}</p>
+                <p><strong>Type:</strong> {{ $property->PropertyType->name }}</p>
                 <p><strong>Area:</strong> {{ $property->area }} Sqft</p>
                 <p><strong>Bedrooms:</strong> {{ $property->num_bedrooms }}</p>
                 <p><strong>Bathrooms:</strong> {{ $property->num_bathrooms }}</p>

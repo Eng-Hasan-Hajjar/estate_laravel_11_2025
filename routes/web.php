@@ -100,9 +100,11 @@ Route::get('property-type-web',function(){
     return view('website.pages.property-type');
 });
 
-Route::get('advance-search',function(){
-    return view('website.pages.advance-search');
-});
+use App\Http\Controllers\SearchController;
+
+Route::get('/advance-search', [SearchController::class, 'advanceSearch'])->name('search');
+
+
 
 
 use App\Http\Controllers\RatingController;

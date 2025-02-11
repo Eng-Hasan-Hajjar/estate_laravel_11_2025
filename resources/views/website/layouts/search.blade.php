@@ -13,11 +13,11 @@
                         
                         <!-- قائمة اختيار نوع العقار -->
                         <div class="col-md-4">
-                            <select name="type" class="form-select border-0 py-3">
+                            <select name="property_type_id" class="form-select border-0 py-3">
                                 <option value="">Property Type</option>
-                                @foreach($properties as $property)
-                                    <option value="{{ $property->type }}" {{ request('type') == $property->type ? 'selected' : '' }}>
-                                        {{ $property->type }}
+                                @foreach($propertyTypes as $propertyType)
+                                    <option value="{{ $propertyType->id }}">
+                                        {{ $propertyType->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -25,11 +25,11 @@
 
                         <!-- قائمة اختيار الموقع -->
                         <div class="col-md-4">
-                            <select name="location" class="form-select border-0 py-3">
+                            <select name="location_id" class="form-select border-0 py-3">
                                 <option value="">Location</option>
-                                @foreach($properties as $property)
-                                    <option value="{{ $property->location }}" {{ request('location') == $property->location ? 'selected' : '' }}>
-                                        {{ $property->location }}
+                                @foreach($locations as $location)
+                                    <option value="{{ $location->id }}" >
+                                        {{ $location->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-dark border-0 w-100 py-3">Search</button>
+                    <button type="submit" class="btn btn-dark border-0 w-100 py-3">Filter</button>
                 </div>
             </div>
         </form>
