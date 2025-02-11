@@ -95,10 +95,8 @@ Route::get('property-list-web',[PropertyController::class, 'propertyList']);
 
 Route::get('/property-web/{id}', [PropertyController::class, 'show_web'])->name('propertyweb.details');
 
+Route::get('property-type-web',[PropertyController::class, 'propertyTypeList']);
 
-Route::get('property-type-web',function(){
-    return view('website.pages.property-type');
-});
 
 use App\Http\Controllers\SearchController;
 

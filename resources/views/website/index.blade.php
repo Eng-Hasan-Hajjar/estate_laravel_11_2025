@@ -1,5 +1,3 @@
-
-
 <head>
     @include('website.layouts.head')
 </head>
@@ -29,26 +27,17 @@
         @include('website.layouts.property-list')
         <!-- Property List End -->
 
+        <!-- About Start -->
+        @include('website.layouts.about')
+        <!-- About End -->
 
         <!-- Category Start -->
         @include('website.layouts.category')
         <!-- Category End -->
 
-
-        <!-- About Start -->
-        @include('website.layouts.about')
-        <!-- About End -->
-
-
-   
-
         <!-- Call to Action Start -->
         @include('website.layouts.call-action')
         <!-- Call to Action End -->
-
-
-    
-
 
         <!-- Testimonial Start -->
         @include('website.layouts.testimonial')

@@ -4,6 +4,7 @@
             <h1 class="mb-3">Property Types</h1>
             <p>Types of properties available on the site.</p>
         </div>
+        
         <div class="row g-4">
             @foreach($propertyTypes as $propertyType)
                 <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
