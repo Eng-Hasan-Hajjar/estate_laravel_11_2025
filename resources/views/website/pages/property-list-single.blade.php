@@ -79,18 +79,15 @@
         .next-btn {
             right: 20px;
         }
-
         .prev-btn:hover, .next-btn:hover {
             background-color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
 <body>
-
     <div class="container-xxl bg-white p-0">
         @include('website.layouts.spinner')
         @include('website.layouts.nav-bar')
-
         <div class="container property-details-container">
             <h1 class="text-center">{{ $property->title }}</h1>
             <img class="property-image" 
@@ -98,7 +95,6 @@
                       ? asset('storage/'.$property->mainImage->image_url) 
                       : asset('img/default.jpg') }}" 
                  alt="Property Image">
-            
             <div class="details-box">
                 <h4>Details</h4>
                 <p><strong>Price:</strong> ${{ number_format($property->price, 2) }}</p>
@@ -111,8 +107,6 @@
                 <p><strong>Bathrooms:</strong> {{ $property->num_bathrooms }}</p>
                 <p><strong>Description:</strong> {{ $property->description }}</p>
             </div>
-      
-
         <!-- معرض الصور -->
         <h3 class="mt-5">Property Gallery</h3>
         <div class="gallery-container">
@@ -122,7 +116,6 @@
                     onclick="openPopup('{{ asset('storage/' . $image->image_url) }}', {{ $index }})">
             @endforeach
         </div>
-
         <!-- نافذة عرض الصورة المكبرة مع أزرار التحكم -->
         <div class="image-popup" id="imagePopup">
             <span class="close-popup" onclick="closePopup()">&times;</span>
@@ -130,13 +123,9 @@
             <img id="popupImage" src="" alt="Large Image">
             <button class="next-btn" onclick="nextImage()">&#10095;</button>
         </div>
-
-
     </div>
-
         @include('website.layouts.footer')
     </div>
-
     @include('website.layouts.script')
 </body>
 </html>

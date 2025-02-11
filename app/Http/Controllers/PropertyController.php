@@ -294,6 +294,7 @@ class PropertyController extends Controller
             return redirect()->route('properties.index')->with('success', 'Property deleted successfully.');
      
     }
+    //websitess
     public function filterweb(Request $request)
     {
         //dd($request); // لاختبار وصول البيانات
@@ -316,11 +317,6 @@ class PropertyController extends Controller
        // $properties = $query->paginate(10);
         return view('website.index', compact('properties','propertyTypes','locations'));
     }
-
-
-
-    //websitess
-
     public function filter(Request $request)
     {
         // إنشاء الاستعلام مع تحميل الصور
@@ -353,16 +349,14 @@ class PropertyController extends Controller
         // إرسال القيم المحددة مع العرض للحفاظ على القيم المحددة في النموذج
         return view('website.properties', compact('properties'))->with($request->all());
     }
-
-    
-
     public function propertyList()
     {
-        $properties = Property::with('images')->paginate(10);
-        return view('website.pages.property-list', compact('properties'));
+        $query = Property::with('images');
+        $properties = $query->with(['images', 'location','propertyType'])->paginate(10);
+        $locations=Location::all();
+        $propertyTypes = PropertyType::withCount('properties')->get();
+        return view('website.pages.property-list', compact('properties','locations','propertyTypes'));
     }
-
-
     public function propertyTypeList()
     {
         $query = Property::with('images');
@@ -371,7 +365,12 @@ class PropertyController extends Controller
         $properties = $query->with(['images', 'location','propertyType'])->paginate(10);
         return view('website.pages.property-type', compact('properties','propertyTypes','locations'));
     }
-
-
-
+    public function propertyTypeSingle()
+    {
+        $query = Property::with('images');
+        $properties = $query->with(['images', 'location','propertyType'])->paginate(10);
+        $locations=Location::all();
+        $propertyTypes = PropertyType::withCount('properties')->get();
+        return view('website.pages.property-type-single', compact('properties','propertyTypes','locations'));
+    }
 }

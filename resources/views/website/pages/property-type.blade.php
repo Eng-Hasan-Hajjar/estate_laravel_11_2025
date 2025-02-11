@@ -15,7 +15,7 @@
         @include('website.layouts.category')
         <!-- Category End -->
         <!-- Call to Action Start -->
-        @include('website.layouts.call-action')
+    
         <!-- Call to Action End -->
         <!-- Footer Start -->
         @include('website.layouts.footer')
