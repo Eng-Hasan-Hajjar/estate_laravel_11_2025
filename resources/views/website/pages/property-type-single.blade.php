@@ -9,6 +9,7 @@
         <!-- Navbar Start -->
         @include('website.layouts.nav-bar')
         <!-- Navbar End -->
+        <h2 class="text-center text-primary my-4">  Properties of type:  {{ $selectedPropertyType->name }}</h2>
         <!-- Property List Start -->
         @include('website.layouts.property-list')
         <!-- Property List End -->

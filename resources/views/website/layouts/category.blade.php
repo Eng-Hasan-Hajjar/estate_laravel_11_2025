@@ -7,7 +7,7 @@
         <div class="row g-4">
             @foreach($propertyTypes as $propertyType)
                 <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
-                    <a class="cat-item d-block bg-light text-center rounded p-3" href="{{route('propertytypeweb.single')}}">
+                    <a class="cat-item d-block bg-light text-center rounded p-3" href="{{ route('propertytypeweb.single', $propertyType->id) }}">
                         <div class="rounded p-4">
                             <div class="icon mb-3">
                                 <img class="img-fluid" src="{{ asset('website/img/icon-villa.png') }}" alt="Icon">

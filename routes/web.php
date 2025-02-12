@@ -64,7 +64,10 @@ Route::get('property-agent-web',function(){
 Route::get('property-list-web',[PropertyController::class, 'propertyList']);
 Route::get('/property-web/{id}', [PropertyController::class, 'show_web'])->name('propertyweb.details');
 Route::get('property-type-web',[PropertyController::class, 'propertyTypeList']);
-Route::get('property-type-web-single',[PropertyController::class, 'propertyTypeSingle'])->name('propertytypeweb.single');
+Route::get('property-type-web-single/{propertyTypeId}', [PropertyController::class, 'propertyTypeSingle'])
+    ->name('propertytypeweb.single');
+
+//Route::get('property-type-web-single',[PropertyController::class, 'propertyTypeSingle'])->name('propertytypeweb.single');
 Route::get('/advance-search', [SearchController::class, 'advanceSearch'])->name('search');
 Route::post('/properties/{property}/rate', [RatingController::class, 'store'])->name('properties.rate');
 Route::resource('ratings', RatingController::class);

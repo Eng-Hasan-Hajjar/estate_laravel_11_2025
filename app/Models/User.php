@@ -59,6 +59,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }
+    public function hasRole($roleName)
+    {
+        return $this->roles->contains('name', $roleName);
+    }
        /**
      * تعيين دور للمستخدم
      */
@@ -85,12 +89,12 @@ class User extends Authenticatable
 
     /**
      * التحقق مما إذا كان المستخدم لديه دور معين
-     */
+     
     public function hasRole($roleName): bool
     {
         return $this->roles->contains('name', $roleName);
     }
-    
+    */
 
 
 }

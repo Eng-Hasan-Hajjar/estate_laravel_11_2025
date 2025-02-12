@@ -365,6 +365,26 @@ class PropertyController extends Controller
         $properties = $query->with(['images', 'location','propertyType'])->paginate(10);
         return view('website.pages.property-type', compact('properties','propertyTypes','locations'));
     }
+    public function propertyTypeSingle(Request $request, $propertyTypeId)
+{
+    // جلب العقارات حسب نوع العقار المحدد
+    $query = Property::with(['images', 'location', 'propertyType'])
+                     ->where('property_type_id', $propertyTypeId);
+
+    // تنفيذ الاستعلام مع التصفح
+    $properties = $query->paginate(10);
+
+    // جلب جميع المواقع وأنواع العقارات مع عداد العقارات لكل نوع
+    $locations = Location::all();
+    $propertyTypes = PropertyType::withCount('properties')->get();
+
+    // جلب نوع العقار الحالي لعرضه في العنوان
+    $selectedPropertyType = PropertyType::findOrFail($propertyTypeId);
+
+    return view('website.pages.property-type-single', compact('properties', 'propertyTypes', 'locations', 'selectedPropertyType'));
+}
+
+/*
     public function propertyTypeSingle()
     {
         $query = Property::with('images');
@@ -373,4 +393,6 @@ class PropertyController extends Controller
         $propertyTypes = PropertyType::withCount('properties')->get();
         return view('website.pages.property-type-single', compact('properties','propertyTypes','locations'));
     }
+
+    */
 }
