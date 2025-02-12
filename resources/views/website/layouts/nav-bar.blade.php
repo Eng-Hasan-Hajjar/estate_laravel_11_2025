@@ -13,20 +13,16 @@
                     <div class="navbar-nav ms-auto"  style="margin-right:20px">
                         <a href={{url('indexproperty')}} class="nav-item nav-link active">Home</a>
                         <a href="{{ route('search') }}"  class="nav-item nav-link">Search</a>
-                        <a href="about-web" class="nav-item nav-link">About</a>
+                        <a href="{{ route('about') }}" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
+                            <a href="{{url('property-list-web')}}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a href={{url('property-list-web')}} class="dropdown-item">Property List</a>
-                                <a href="property-type-web" class="dropdown-item">Property Type</a>
-                                <a href="property-agent-web" class="dropdown-item">Property Agent</a>
+                                <a href={{url('property-type-web')}}  class="dropdown-item">Property Type</a>
+                                <a href={{url('property-agent-web')}}  class="dropdown-item">Property Agent</a>
                             </div>
                         </div>
-                       
-                 
                     </div>
-
-
                     @if (Route::has('login'))
                     <nav class="-mx-3 flex flex-1 justify-end">
                         @auth
@@ -36,7 +32,6 @@
                             >
                                 Dashboard
                             </a>
-                        
                             <a href="{{ route('logout') }}" 
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                 onclick="event.preventDefault(); 
@@ -46,9 +41,6 @@
                                 <form id="logout-form" action="{{ route('logout') }}" 
                                 method="POST" class="d-none">@csrf
                             </form>
-                              
-                             
-                            
                         @else
                             <a
                                 href="{{ route('login') }}"

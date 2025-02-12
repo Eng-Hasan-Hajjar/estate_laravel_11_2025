@@ -57,7 +57,7 @@ Route::post('/properties/filterweb', [PropertyController::class, 'filterweb'])->
 Route::get('indexproperty', [PropertyController::class, 'index_web'])->name('indexproperty2');
 Route::get('about-web',function(){
     return view('website.pages.about');
-});
+})->name('about');
 Route::get('property-agent-web',function(){
     return view('website.pages.property-agent');
 });
@@ -68,7 +68,10 @@ Route::get('property-type-web-single/{propertyTypeId}', [PropertyController::cla
     ->name('propertytypeweb.single');
 
 //Route::get('property-type-web-single',[PropertyController::class, 'propertyTypeSingle'])->name('propertytypeweb.single');
-Route::get('/advance-search', [SearchController::class, 'advanceSearch'])->name('search');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/advance-search', [SearchController::class, 'advanceSearch'])->name('search');
+});
 Route::post('/properties/{property}/rate', [RatingController::class, 'store'])->name('properties.rate');
 Route::resource('ratings', RatingController::class);
 // Route لعرض التعليقات الخاصة بالعقار
