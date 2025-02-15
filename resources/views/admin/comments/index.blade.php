@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <h1>التعليقات</h1>
+    <h1>   Comments</h1>
     <table class="table">
         <thead>
             <tr>

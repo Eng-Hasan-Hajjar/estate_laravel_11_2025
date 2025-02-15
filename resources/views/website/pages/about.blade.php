@@ -35,7 +35,7 @@
         @include('website.layouts.call-action')
         <!-- Call to Action End -->
         <!-- Testimonial Start -->
-        @include('website.layouts.testimonial')
+        
         <!-- Testimonial End -->
         <!-- Footer Start -->
         @include('website.layouts.footer')

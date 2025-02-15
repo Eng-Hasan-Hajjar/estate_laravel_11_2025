@@ -12,10 +12,10 @@ return [
     | عبر المسارات.
     |
     */
-
+/*
     'role' => \App\Http\Middleware\RoleMiddleware::class,
     'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-
+*/
     /*
     |--------------------------------------------------------------------------
     | Global Middleware

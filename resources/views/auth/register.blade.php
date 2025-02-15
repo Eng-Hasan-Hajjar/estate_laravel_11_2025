@@ -43,12 +43,12 @@
 
 
     <div class="mb-3">
-        <label for="profile_image" class="form-label">الصورة الشخصية (اختياري)</label>
+        <label for="profile_image" class="form-label">  Personal photo (optional) </label>
         <input type="file" class="form-control" name="profile_image" accept="image/*">
     </div>
 
     <div class="mb-3">
-        <label for="payment_receipt" class="form-label">إيصال الدفع (اختياري)</label>
+        <label for="payment_receipt" class="form-label">  Payment receipt (optional) </label>
         <input type="file" class="form-control" name="payment_receipt" accept="image/*">
     </div>
 

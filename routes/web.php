@@ -6,7 +6,7 @@ use App\Http\Controllers\PropertyTypeController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\UserRoleController;
+
 use App\Http\Controllers\PropertyImageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\SearchController;
@@ -14,7 +14,6 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\RegionController;
-
 Route::get('/', [PropertyController::class, 'index_web'])->name('indexproperty');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,6 +36,7 @@ Route::delete('/users/{user}/remove-role/{role}', [UserController::class, 'remov
 Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    
 });
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');

@@ -59,7 +59,7 @@ class PropertyController extends Controller
         }
     
         // جلب البيانات مع التقسيم (Pagination)
-        $properties = $query->with(['images', 'location'])->paginate(10);
+        $properties = $query->with(['images', 'location', 'user'])->paginate(10);
         $locations = Location::all(); // للحصول على قائمة المواقع لعرضها في الفلترة
         $propertyTypes = PropertyType::all(); // للحصول على قائمة أنواع العقارات لعرضها في الفلترة
     

@@ -13,7 +13,7 @@
                 <tr>
                    
                     <th>Title</th>
-               
+                    <th>Added By</th> <!-- عمود جديد لعرض اسم المستخدم -->
                   
                     <th>Actions</th>
                 </tr>
@@ -23,7 +23,7 @@
                     <tr>
                         <td>{{ $property->title }}</td>
 
-                      
+                        <td>{{ $property->user->name }}</td> <!-- عرض اسم المستخدم -->
                        <td class="d-flex justify-content-start align-items-center gap-3">  <!-- زيادة المسافة هنا -->
                         <a href="{{ route('properties.show', $property->id) }}" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i> View

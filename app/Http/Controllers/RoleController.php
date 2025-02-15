@@ -1,13 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Models\Permission;
 use App\Models\Role;
-use Illuminate\Http\Request;
-
-
-
 class RoleController extends Controller
 {
      // عرض جميع الأدوار
@@ -16,14 +12,12 @@ class RoleController extends Controller
          $roles = Role::all();
          return view('admin.roles.index', compact('roles'));
      }
- 
      // عرض نموذج إنشاء دور جديد
      public function create()
      {
          $permissions = Permission::all();
          return view('admin.roles.create', compact('permissions'));
      }
- 
      // حفظ دور جديد
      public function store(Request $request)
      {
