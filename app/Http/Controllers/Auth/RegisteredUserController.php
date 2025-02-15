@@ -65,6 +65,19 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
         Auth::login($user);
-        return redirect(route('dashboard', absolute: false));
+
+        // جلب دور المستخدم بعد تسجيل الدخول
+        $userRoleId = $user->roles()->first()->id ?? null;
+
+        if ($userRoleId == 3) {
+            return redirect(route('indexproperty', absolute: false));
+        }
+        else{
+            return redirect(route('dashboard', absolute: false));
+        }
+
+
+
+
     }
 }

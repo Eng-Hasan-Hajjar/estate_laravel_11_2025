@@ -37,21 +37,16 @@
                                     <li class="list-group-item">
                                         <strong>Area:</strong> {{ $property->area }} sq. ft.
                                     </li>
-
-
                                     <li class="list-group-item">
                                         <strong> The directions is:  </strong>
                                         @if($property->directions)
                                             {{  $property->directions }}
                                         @else
-                                        undefined
+                                            undefined
                                         @endif
                                     </li>
-
                                     <li class="list-group-item"><strong> Balconies:</strong> {{ $property->num_balconies }}</li>
                                     <li class="list-group-item"> <strong>Is furnished:</strong> {{ $property->is_furnished ? 'yes' : 'no' }}</li>
-
-
                                     <li class="list-group-item">
                                         <strong>Bedrooms:</strong> {{ $property->num_bedrooms }}
                                     </li>
@@ -69,14 +64,6 @@
                     <!-- Main Image -->
                     <div class="col-md-4">
 
-
-
-                     
-                         
-
-                    
-
-                        
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-header bg-secondary text-white">
                                 <h5 class="m-0">Main Image</h5>

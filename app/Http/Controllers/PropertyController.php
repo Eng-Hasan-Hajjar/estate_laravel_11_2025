@@ -65,29 +65,18 @@ class PropertyController extends Controller
     
         return view('admin.properties.index', compact('properties', 'locations', 'propertyTypes'));
     }
-    /*
-    public function index()
-    {
-        //$comments = Comment::where('property_id', $propertyId)->get();
-        $locations=Location::all();
-        $properties = Property::with(['images', 'location'])->paginate(10);
-        return view('admin.properties.index', compact('properties','locations'));
-    }
-
-    */
+  
     public function index_web()
     { 
         $locations = Location::all();
         $propertyTypes = PropertyType::withCount('properties')->get(); // جلب الأنواع مع عدد العقارات
         $properties = Property::with('images')->paginate(10);
-    
-        return view('website.index', compact('properties', 'propertyTypes', 'locations'));
-      
+        $comments = Comment::all();
+        return view('website.index', compact('comments','properties', 'propertyTypes', 'locations'));
     }
     public function create()
     {
         $this->authorize('create', Property::class);
-       
         $locations=Location::with('regions')->get();
         $regions=Region::all();
         $propertyTypes = PropertyType::all(); // جلب جميع أنواع العقارات
@@ -105,13 +94,13 @@ class PropertyController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
-            'price' => 'required|numeric|max:999999999999999',
+            'price' => 'required|numeric|max:999999999999999|min:0',
             'currency' => 'required|string|max:10', // التحقق من العملة
             'property_type_id' => 'required|exists:property_types,id',
             'location_id' => 'required|exists:locations,id',
-            'area' => 'required|numeric',
-            'num_bedrooms' => 'required|integer',
-            'num_bathrooms' => 'required|integer',
+            'area' => 'required|numeric|min:0',
+            'num_bedrooms' => 'required|integer|min:0',
+            'num_bathrooms' => 'required|integer|min:0',
             'status' => 'required',
             'num_balconies' => 'nullable|integer|min:0',
             'is_furnished' => 'nullable|boolean',
@@ -141,6 +130,11 @@ class PropertyController extends Controller
             'main_image.image' => 'The main image must be an image file.',
             'main_image.mimes' => 'The main image must be in jpeg, png, or jpg format.',
             'main_image.max' => 'The main image size must not exceed 2MB.',
+            'price.min' => 'The price must be greater than zero.',
+            'area.min' => 'The area must be greater than zero.',
+            'num_bedrooms.min' => 'The number of bedrooms must be at least 1.',
+            'num_bathrooms.min' => 'The number of bathrooms must be at least 1.',
+            'num_balconies.min' => 'The number of balconies cannot be negative.',
             'directions.array' => 'الاتجاهات يجب أن تكون قائمة من القيم.',
             'directions.*.in' => 'الاتجاه المحدد غير صالح.',
             'num_balconies.integer' => 'عدد الشرفات يجب أن يكون رقمًا صحيحًا.',
@@ -154,14 +148,6 @@ class PropertyController extends Controller
             $validatedData['directions'] = null;
         }
 
-        /*
-        $validatedData['region_id'] = 'region_id'; 
-        $validatedData['location_id'] = 'location_id'; 
-        $validatedData['property_type_id'] = 'property_type_id'; 
-
-
-
-        */
         $validatedData['region_id'] = $request->region_id;
         $validatedData['location_id'] = $request->location_id;
         $validatedData['property_type_id'] = $request->property_type_id;
@@ -194,7 +180,7 @@ class PropertyController extends Controller
     {
         $this->authorize('view', $property);
         // تحميل الصورة الرئيسية والصور الأخرى للعقار
-        $property->load('mainImage', 'images', 'location.region', 'propertyType', 'location.region');
+        $property->load('mainImage', 'images', 'location', 'propertyType', 'region');
         // dd($property->mainImage->image_url);
         // استخدام الـ property->id بدلاً من $propertyId
         $comments = Comment::where('property_id', $property->id)->get();
@@ -221,13 +207,13 @@ class PropertyController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'currency' => 'required|string|max:10',
             'property_type_id' => 'required',
             'location_id' => 'required',
-            'area' => 'required|numeric',
-            'num_bedrooms' => 'required|integer',
-            'num_bathrooms' => 'required|integer',
+            'area' => 'required|numeric|min:0',
+            'num_bedrooms' => 'required|integer|min:0',
+            'num_bathrooms' => 'required|integer|min:0',
             'status' => 'required',
             'directions' => 'nullable|array',
             'directions.*' => 'in:north,south,east,west',
@@ -252,6 +238,11 @@ class PropertyController extends Controller
             'directions.*.in' => 'الاتجاه المحدد غير صالح.',
             'num_balconies.integer' => 'عدد الشرفات يجب أن يكون رقمًا صحيحًا.',
             'is_furnished.boolean' => 'يجب أن تكون القيمة إما نعم أو لا.',
+            'price.min' => 'The price must be greater than zero.',
+            'area.min' => 'The area must be greater than zero.',
+            'num_bedrooms.min' => 'The number of bedrooms must be at least 1.',
+            'num_bathrooms.min' => 'The number of bathrooms must be at least 1.',
+            'num_balconies.min' => 'The number of balconies cannot be negative.',
             'status.required' => 'The status field is required.'
         ]);
       // تحويل الاتجاهات إلى نص إذا تم تحديدها
@@ -384,15 +375,4 @@ class PropertyController extends Controller
     return view('website.pages.property-type-single', compact('properties', 'propertyTypes', 'locations', 'selectedPropertyType'));
 }
 
-/*
-    public function propertyTypeSingle()
-    {
-        $query = Property::with('images');
-        $properties = $query->with(['images', 'location','propertyType'])->paginate(10);
-        $locations=Location::all();
-        $propertyTypes = PropertyType::withCount('properties')->get();
-        return view('website.pages.property-type-single', compact('properties','propertyTypes','locations'));
-    }
-
-    */
 }

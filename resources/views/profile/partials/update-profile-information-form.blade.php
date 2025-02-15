@@ -63,7 +63,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Upload or change your profile picture and payment receipt.') }}
+            {{ __('Upload  your profile picture and payment receipt.') }}
         </p>
         <div class="flex items-center space-x-8">
             <!-- صورة الملف الشخصي -->

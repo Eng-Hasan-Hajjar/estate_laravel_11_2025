@@ -17,8 +17,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('property_id')->constrained()->onDelete('cascade');
             $table->foreignId('parent_comment_id')->nullable()->constrained('comments')->onDelete('cascade');
-   
-            
             $table->timestamps();
         });
     }

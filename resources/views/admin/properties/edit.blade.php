@@ -32,8 +32,8 @@
         <!-- حقل الموقع -->
   
         <div class="mb-3">
-            <label for="location" class="form-label"> Location</label>
-            <select name="location" id="location" class="form-select @error('location') is-invalid @enderror" required>
+            <label for="location_id" class="form-label"> Location</label>
+            <select name="location_id" id="location_id" class="form-select @error('location') is-invalid @enderror" required>
                 <option value="">Select Location </option>
                 @foreach($locations as $location)
                     <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>

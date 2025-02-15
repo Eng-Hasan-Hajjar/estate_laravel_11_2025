@@ -11,4 +11,5 @@
         <small class="text-muted">{{ $rating->created_at->format('Y-m-d H:i') }}</small> <!-- تاريخ ووقت التقييم -->
         <p>{{ $rating->comment }}</p>
     </div>
+    
 @endforeach
