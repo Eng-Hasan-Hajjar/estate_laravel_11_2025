@@ -62,7 +62,8 @@ class PropertyController extends Controller
         $properties = $query->with(['images', 'location', 'user'])->paginate(10);
         $locations = Location::all(); // للحصول على قائمة المواقع لعرضها في الفلترة
         $propertyTypes = PropertyType::all(); // للحصول على قائمة أنواع العقارات لعرضها في الفلترة
-    
+        $comments = Comment::all();
+
         return view('admin.properties.index', compact('properties', 'locations', 'propertyTypes'));
     }
   
@@ -305,8 +306,9 @@ class PropertyController extends Controller
         $locations=Location::all();
         $propertyTypes = PropertyType::all();
         $properties = $query->with(['images', 'location','propertyType'])->paginate(10);
-       // $properties = $query->paginate(10);
-        return view('website.index', compact('properties','propertyTypes','locations'));
+        $comments = Comment::all();
+
+        return view('website.index', compact('comments','properties','propertyTypes','locations'));
     }
     public function filter(Request $request)
     {
@@ -337,8 +339,10 @@ class PropertyController extends Controller
         }
         // تنفيذ الاستعلام وجلب النتائج مع التصفح
         $properties = $query->paginate(10);
+        $comments = Comment::all();
+
         // إرسال القيم المحددة مع العرض للحفاظ على القيم المحددة في النموذج
-        return view('website.properties', compact('properties'))->with($request->all());
+        return view('website.properties', compact('comments','properties'))->with($request->all());
     }
     public function propertyList()
     {

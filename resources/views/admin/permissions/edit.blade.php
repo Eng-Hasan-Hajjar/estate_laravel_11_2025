@@ -9,7 +9,7 @@
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ $permission->name }}" required>
         </div>
-        <div class="mb-3">
+        <div class="mb-3" hidden>
             <label for="description" class="form-label">Description</label>
             <textarea class="form-control" id="description" name="description">{{ $permission->description }}</textarea>
         </div>

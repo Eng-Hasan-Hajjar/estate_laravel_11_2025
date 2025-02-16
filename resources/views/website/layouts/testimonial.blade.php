@@ -11,7 +11,10 @@
                     <div class="bg-white border rounded p-4">
                         <p>{{ $comment->content }}</p>
                         <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded" src="{{asset('website/img/testimonial-1.jpg')}}" style="width: 45px; height: 45px;">
+
+                             <img class="img-fluid flex-shrink-0 rounded" src="{{asset('website/img/testimonial-1.jpg')}}" style="width: 45px; height: 45px;">
+
+                          
                             <div class="ps-3">
                                 <h6 class="fw-bold mb-1">{{ $comment->user->name }}</h6>
                                 <small>Profession</small>
